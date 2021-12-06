@@ -15,6 +15,7 @@ public class ChessModel extends Observable {
 	 */
 	public ChessModel(){
 		pieces = new ChessPiece[8][8];
+		buildBoard();
 		turn = 0;
 	}
 

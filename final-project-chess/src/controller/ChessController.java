@@ -12,9 +12,9 @@ public class ChessController {
     }
 
     public ChessPiece[][] getBoard(){
-        //TODO: return the chess piece array representing the board.
-        return null;
+        return model.getBoard();
     }
+
 
     //TODO: implement a method that validates and makes a move in the model.
 }
