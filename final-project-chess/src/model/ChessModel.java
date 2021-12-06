@@ -2,11 +2,11 @@ package model;
 
 import java.util.Observable;
 
-import model.pieces.ChessPiece;
+import model.pieces.*;
 
 public class ChessModel extends Observable {
 
-	private ChessPiece[][] pieces;
+	private ChessPiece[][] pieces; //ChessPiece[col][row]
 	private int turn; //represents the player that plays next 0 for white 1 for black.
 
 
@@ -16,6 +16,55 @@ public class ChessModel extends Observable {
 	public ChessModel(){
 		pieces = new ChessPiece[8][8];
 		turn = 0;
+	}
+
+	/**
+	 * Builds the board for a new game.
+	 */
+	private void buildBoard(){
+		for (int row=2; row<=5; row++){
+			for (int col=0; col<=7; col++){
+				pieces[col][row] = null;
+			}
+		}
+		addBackline(0);
+		addBackline(1);
+
+	}
+
+	/**
+	 *
+	 * @param color 0 for white, 1 for black.
+	 */
+	private void addBackline(int color){
+		int row = 0;
+		if (color==1){
+			row = 7;
+		}
+
+		// Adds rooks
+		int col = 0;
+		pieces[col][row] = new Rook(row, col, color);
+		col = 7;
+		pieces [col][row] = new Rook(row, col, color);
+
+		//Adds knights
+		col = 1;
+		pieces[col][row] = new Knight(row, col, color);
+		col = 6;
+		pieces [col][row] = new Knight(row, col, color);
+
+		//Adds bishops
+		col = 2;
+		pieces[col][row] = new Bishop(row, col, color);
+		col = 5;
+		pieces [col][row] = new Bishop(row, col, color);
+
+		col = 3;
+		pieces[col][row] = new Queen(row, col, color);
+
+		col = 4;
+		pieces[col][row] = new King(row, col, color);
 	}
 
 	/**
