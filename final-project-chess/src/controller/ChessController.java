@@ -10,7 +10,8 @@ public class ChessController {
         //TODO: I have created this constructor just to begin working on the view. Feel free to modify as needed.
         this.model=model;
     }
-    ChessPiece[][] getBoard(){
+
+    public ChessPiece[][] getBoard(){
         //TODO: return the chess piece array representing the board.
         return null;
     }
