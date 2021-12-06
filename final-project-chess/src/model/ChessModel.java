@@ -29,11 +29,21 @@ public class ChessModel extends Observable {
 		}
 		addBackline(0);
 		addBackline(1);
+		int row = 1;
+		int color = 0;
+		for (int col=0; col<=7; col++){
+			pieces[col][row]= new Pawn(row,col,color);
+		}
 
+		row = 6;
+		color = 1;
+		for (int col=0; col<=7; col++){
+			pieces[col][row]= new Pawn(row,col,color);
+		}
 	}
 
 	/**
-	 *
+	 *Adds back-line pieces (pieces other than pawns) for the color denoted by the parameter.
 	 * @param color 0 for white, 1 for black.
 	 */
 	private void addBackline(int color){
