@@ -6,8 +6,6 @@ import java.util.Observer;
 import controller.ChessController;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
@@ -17,13 +15,16 @@ import model.ChessModel;
 import model.pieces.ChessPiece;
 
 public class ChessView extends Application implements Observer {
-	private ChessPiece[][] pieces;
 	ChessModel model;
 	ChessController control;
 	Stage stage;
 
+	/**
+	 * Launches the application. Creates the new model and control and sets up the initial scene.
+	 * @param stage the stage for the application
+	 */
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage){
 		model = new ChessModel();
 		control = new ChessController(model);
 		this.stage = stage;
@@ -40,6 +41,9 @@ public class ChessView extends Application implements Observer {
 		stage.show();
 	}
 
+	/**
+	 * This method adds the menu bar at the top of the scene.
+	 */
 	public void addMenu(){
 		Scene scene = stage.getScene();
 		MenuItem newGame = new MenuItem("New Game");
