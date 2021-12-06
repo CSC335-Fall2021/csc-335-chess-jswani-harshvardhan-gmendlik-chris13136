@@ -2,8 +2,8 @@ package model.pieces;
 
 public class Queen extends ChessPiece {
 
-	public Queen(int row, int col) {
-		super(row, col);
+	public Queen(int row, int col, int color) {
+		super(row, col, color);
 	}
 
 	@Override

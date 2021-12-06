@@ -4,9 +4,11 @@ public abstract class ChessPiece {
 
 	private int row;
 	private int col;
+	private final int color; //TODO: Color needs to be to determine valid move. especially for pawns.
 
-	public ChessPiece(int row, int col) {
+	public ChessPiece(int row, int col, int color) {
 		this.setPosition(row, col);
+		this.color = color;
 	}
 
 	/**
