@@ -8,6 +8,9 @@ public class Rook extends ChessPiece {
 
 	@Override
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+		if(pieces[col][row].getColor() == this.color) {
+			return false;
+		}
 		//diagonal check 
 		if(this.row != row && this.col != col) {
 			return false;
