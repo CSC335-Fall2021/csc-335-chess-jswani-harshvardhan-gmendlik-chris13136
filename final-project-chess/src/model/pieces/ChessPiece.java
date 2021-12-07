@@ -51,7 +51,7 @@ public abstract class ChessPiece {
 	 * @param row Row where the chess piece is located
 	 * @param col Column where the chess piece is located
 	 */
-	void setPosition(int row, int col) {
+	public void setPosition(int row, int col) {
 		this.row = row;
 		this.col = col;
 	}

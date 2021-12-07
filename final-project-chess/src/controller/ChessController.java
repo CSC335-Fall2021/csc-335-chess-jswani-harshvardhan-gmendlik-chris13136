@@ -29,7 +29,10 @@ public class ChessController {
     				return false;
     			}
     		}
-    		cur.isValidMove(newCol, newRow, board);
+    		if(cur.isValidMove(newCol, newRow, board)) {
+    			cur.setPosition(newCol, newRow);
+    		}
+    		
     	}
     	return false;
     }
