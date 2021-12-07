@@ -1,8 +1,8 @@
 package view;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,12 +19,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.ChessModel;
 import model.pieces.*;
-
-import javax.swing.*;
 
 public class ChessView extends Application implements Observer {
 	ChessModel model;
@@ -37,6 +34,7 @@ public class ChessView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage stage) throws FileNotFoundException {
+		System.out.println(new File(".").getAbsolutePath());
 		model = new ChessModel();
 		control = new ChessController(model);
 		this.stage = stage;
@@ -95,6 +93,7 @@ public class ChessView extends Application implements Observer {
 					square.setBackground(new Background(new BackgroundFill(color, null, null)));
 					square.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, null)));
 					pane.add(square, col, row);
+					square.setAlignment(Pos.CENTER);
 					if (col!=8){
 						if (color.equals(Color.WHITE)){
 							color = Color.GRAY;
@@ -111,7 +110,7 @@ public class ChessView extends Application implements Observer {
 		ChessPiece[][] pieces = control.getBoard();
 		for (int row=0; row<=7; row++){
 			for (int col=0; col<=7; col++){
-				String imgStr="img/";
+				String imgStr="final-project-chess/src/view/img/";
 				ChessPiece piece= pieces[col][row];
 				if (piece!=null){
 					if (piece.getColor()==0){
