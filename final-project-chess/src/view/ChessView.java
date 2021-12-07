@@ -1,18 +1,26 @@
 package view;
 
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 import controller.ChessController;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.ChessModel;
 import model.pieces.ChessPiece;
+
+import javax.swing.*;
 
 public class ChessView extends Application implements Observer {
 	ChessModel model;
@@ -28,17 +36,132 @@ public class ChessView extends Application implements Observer {
 		model = new ChessModel();
 		control = new ChessController(model);
 		this.stage = stage;
-		stage.setHeight(820);
-		stage.setWidth(800);
+		stage.setHeight(980);
+		stage.setWidth(960);
 		stage.setTitle("Chess");
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		GridPane pane = new GridPane();
-		pane.setPrefSize(800,800);
+		pane.setPrefSize(960,960);
 		root.setBottom(pane);
 		addMenu();
+		setScene("game");
 		stage.show();
+	}
+
+	/**
+	 * Sets the scene on the basis of the argument string provided.
+	 * @param page
+	 */
+	public void setScene(String page){
+		Scene scene = stage.getScene();
+		BorderPane root =(BorderPane) scene.getRoot();
+		GridPane pane = (GridPane) root.getBottom();
+		if (page.equals("game")){
+
+			int rowCount = 10;
+			int columnCount = 10;
+
+			RowConstraints rc = new RowConstraints();
+
+			rc.setPercentHeight(97.959184d / rowCount);
+
+			for (int i = 0; i < rowCount; i++) {
+				pane.getRowConstraints().add(rc);
+			}
+
+			ColumnConstraints cc = new ColumnConstraints();
+			cc.setPercentWidth(100d / columnCount);
+
+			for (int i = 0; i < columnCount; i++) {
+				pane.getColumnConstraints().add(cc);
+			}
+
+			addLetters(pane, 9);
+			addLetters(pane, 0);
+			addNumbers(pane, 0);
+			addNumbers(pane, 9);
+
+			Color color = Color.WHITE;
+			for (int row = 1; row<=8; row++){
+				for (int col = 1; col<=8; col++){
+					HBox square = new HBox();
+					square.setPrefSize(80,80);
+					square.setBackground(new Background(new BackgroundFill(color, null, null)));
+					square.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, null)));
+					pane.add(square, col, row);
+					if (col!=8){
+						if (color.equals(Color.WHITE)){
+							color = Color.GRAY;
+						}else{ color = Color.WHITE;}
+					}
+				}
+			}
+		}
+	}
+
+
+	public void addPieces(GridPane pane){
+		ChessPiece[][] pieces = control.getBoard();
+		for (int row=0; row<=7; row++){
+			for (int col=0; col<=7; col++){
+				String imgStr="";
+				if (pieces[col][row]!=null){
+
+				}
+			}
+		}
+	}
+
+	public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+		Node result = null;
+		ObservableList<Node> children = gridPane.getChildren();
+
+		for (Node node : children) {
+			if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Adds numbers to both sides of the board.
+	 * @param pane The GridPane
+	 * @param col 0 for left, 9 for right.
+	 */
+	private void addNumbers(GridPane pane, int col){
+		for (int row=1; row<=8; row++){
+			HBox numBox = new HBox();
+			Text text=new Text(Integer.toString(9-row));
+			numBox.setDisable(true);
+			numBox.getChildren().add(text);
+			numBox.setPrefSize(80,80);
+			numBox.setAlignment(Pos.CENTER);
+			pane.add(numBox,col,row);
+		}
+	}
+
+	/**
+	 * Adds Letters to the top and bottom of the board.
+	 * @param pane The grid pane.
+	 * @param row 0 for the top, 9 for the bottom.
+	 */
+	private void addLetters(GridPane pane, int row) {
+		char letter = 'a';
+		for (int col=1; col<9; col++){
+			HBox letterBox = new HBox();
+			Text text=new Text(Character.toString(letter));
+			letterBox.setDisable(true);
+			letterBox.getChildren().add(text);
+			letterBox.setPrefSize(80,80);
+			letterBox.setAlignment(Pos.CENTER);
+			pane.add(letterBox,col,row);
+			letter++;
+		}
 	}
 
 	/**
