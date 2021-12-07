@@ -99,12 +99,77 @@ public class ChessController {
 			moveflag = true;
 			//2. attack attacker (aka canBeAttacked on attacker square)
 			
-			// find attacker
+			// find attacker/s
+			ArrayList<ChessPiece> attackersList = new ArrayList<ChessPiece>();
+			ArrayList<ChessPiece> needblockList = new ArrayList<ChessPiece>();
 			for (ChessPiece p : pieceList) {
-				if (p)
+				if (p.isValidMove(curRow, curCol, board)) {
+					attackersList.add(p);
+					attackFlag = true;
+				}
+			}
+			
+			//take out attackers
+			for (ChessPiece p : attackersList) {
+				curRow = p.getRow();
+				curCol = p.getCol();
+				for (ChessPiece x : pieceList) {
+					if(x.isValidMove(curRow, curCol, board)) {
+						needblockList.add(p);
+					}
+			}
+				if(needblockList.size() != 0) {
+					class Touple{
+						public int col;
+						public int row;
+					}
+					// 3. block (aka canBeAttacked or isValid move for each piece 
+					// 	  in opposite colors list on each of the in between squares)
+					for (ChessPiece b : needblockList) {
+						if(b instanceof Pawn) {
+							return true;
+						}
+						if(b instanceof Knight) {
+							return true;
+						}
+						if(b instanceof Bishop) {
+							ArrayList<Touple> oneNeedBlock = new ArrayList<Touple>();
+							int bRow = b.getRow();
+							int bCol = b.getCol();
+							
+							int rowIdd = 1;
+							int colIdd = 1;
+							
+							if (Integer.signum(bRow - king.getRow()) == 1) {
+								rowIdd = -1;
+							}
+							
+							if (Integer.signum(bCol - king.getCol()) == 1) {
+								colIdd = -1;
+							}
+							
+							while (bCol != king.getCol()) {
+								
+							}
+							
+						}
+						if(b instanceof Rook) {
+							
+						}
+						if(b instanceof Queen) {
+							
+						}
+					}
+				}
+				else {
+					// can't move can take 
+					return false;
+				}
+				
 			}
 		}
 		else {
+			//can move out
 			return false;
 		}
 
