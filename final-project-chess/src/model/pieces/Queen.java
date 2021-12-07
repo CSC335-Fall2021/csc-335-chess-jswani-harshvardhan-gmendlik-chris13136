@@ -27,7 +27,6 @@ public class Queen extends ChessPiece {
 					return false;
 				}
 			}
-			setPosition(row, col);
 			return true;
 		}
 		
@@ -45,7 +44,6 @@ public class Queen extends ChessPiece {
 					return false;
 				}
 			}
-			setPosition(row, col);
 			return true;
 		}
 		
@@ -79,7 +77,6 @@ public class Queen extends ChessPiece {
 			curCol += colOff;
 			curRow += rowOff;
 		}
-		setPosition(row, col);
 		return true;
 	}
 
