@@ -29,7 +29,6 @@ public class Rook extends ChessPiece {
 					return false;
 				}
 			}
-			setPosition(row, col);
 			return true;
 		}
 		
@@ -47,7 +46,6 @@ public class Rook extends ChessPiece {
 					return false;
 				}
 			}
-			setPosition(row, col);
 			return true;
 		}
 		

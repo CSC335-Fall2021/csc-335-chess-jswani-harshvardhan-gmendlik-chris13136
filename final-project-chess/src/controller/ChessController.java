@@ -58,6 +58,56 @@ public class ChessController {
 	 * @return isGameOver?
 	 */
 	public boolean isGameOver() {
-		return false;
+		boolean moveflag = false;
+		boolean attackFlag = false;
+		boolean blockFlag = false;
+		// 1. move king (aka check the 8 squares for is vaild  move)
+		// find correct king
+		ArrayList<ChessPiece> pieceList = model.getBlack();
+		ArrayList<ChessPiece> oppList   = model.getWhite();
+		if (model.getTurn() == 1) {
+			pieceList = model.getWhite();
+		    oppList   = model.getBlack();
+		}
+		
+		ChessPiece king = pieceList.get(0);
+		for (ChessPiece p : pieceList) {
+			if(p instanceof King) {
+				king = p;
+				break;
+			}
+		}
+		int curRow = king.getRow();
+		int curCol = king.getCol();
+		if((
+				//left up
+				!king.isValidMove(curCol - 1, curRow - 1, board) &&
+				// up
+				!king.isValidMove(curCol - 0, curRow - 1, board) &&
+				// right up
+				!king.isValidMove(curCol + 1, curRow - 1, board) &&
+				//left
+				!king.isValidMove(curCol - 1, curRow + 0, board) &&
+				//right
+				!king.isValidMove(curCol + 1, curRow + 0, board) &&
+				//left down
+				!king.isValidMove(curCol - 1, curRow + 1, board) &&
+				// down
+				!king.isValidMove(curCol + 0, curRow + 1, board) &&
+				// right down
+				!king.isValidMove(curCol + 1, curRow + 1, board))) {
+			moveflag = true;
+			//2. attack attacker (aka canBeAttacked on attacker square)
+			
+			// find attacker
+			for (ChessPiece p : pieceList) {
+				if (p)
+			}
+		}
+		else {
+			return false;
+		}
+
+		return moveflag && attackFlag && blockFlag;
 	}
 }

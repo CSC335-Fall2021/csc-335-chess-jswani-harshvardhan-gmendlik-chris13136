@@ -19,6 +19,20 @@ public abstract class ChessPiece {
 		return this.color;
 	}
 	/**
+	 * 
+	 * @return the col of the piece
+	 */
+	public int getCol() {
+		return this.col;
+	}
+	/**
+	 * 
+	 * @return the row of the piece
+	 */
+	public int getRow() {
+		return this.row;
+	}
+	/**
 	 * Returns true if the move is valid.
 	 * 
 	 * @param row    Row of potential move
