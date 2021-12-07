@@ -2,15 +2,22 @@ package model.pieces;
 
 public abstract class ChessPiece {
 
-	private int row;
-	private int col;
-	private final int color; //TODO: Color needs to be to determine valid move. especially for pawns.
+	protected int row;
+	protected int col;
+	protected final int color; //TODO: Color needs to be to determine valid move. especially for pawns.
 
 	public ChessPiece(int row, int col, int color) {
 		this.setPosition(row, col);
 		this.color = color;
 	}
-
+	
+	/**
+	 * 
+	 * @return the color of the piece
+	 */
+	public int getColor() {
+		return this.color;
+	}
 	/**
 	 * Returns true if the move is valid.
 	 * 

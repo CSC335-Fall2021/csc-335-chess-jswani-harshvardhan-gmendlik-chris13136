@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import model.pieces.*;
@@ -8,6 +10,8 @@ public class ChessModel extends Observable {
 
 	private ChessPiece[][] pieces; //ChessPiece[col][row]
 	private int turn; //represents the player that plays next 0 for white 1 for black.
+	private ArrayList<ChessPiece> white; // arr of white peaces
+	private ArrayList<ChessPiece> black; // arr of black peaces
 
 
 	/**
@@ -15,6 +19,8 @@ public class ChessModel extends Observable {
 	 */
 	public ChessModel(){
 		pieces = new ChessPiece[8][8];
+		white  = new ArrayList<ChessPiece>();
+		black  = new ArrayList<ChessPiece>();
 		buildBoard();
 		turn = 0;
 	}
@@ -49,33 +55,43 @@ public class ChessModel extends Observable {
 	 */
 	private void addBackline(int color){
 		int row = 0;
+		ArrayList<ChessPiece> currarray = white;
 		if (color==1){
 			row = 7;
+			currarray = black;
 		}
 
 		// Adds rooks
 		int col = 0;
 		pieces[col][row] = new Rook(row, col, color);
+		currarray.add(pieces[col][row]);
 		col = 7;
 		pieces [col][row] = new Rook(row, col, color);
+		currarray.add(pieces[col][row]);
 
 		//Adds knights
 		col = 1;
 		pieces[col][row] = new Knight(row, col, color);
+		currarray.add(pieces[col][row]);
 		col = 6;
 		pieces [col][row] = new Knight(row, col, color);
+		currarray.add(pieces[col][row]);
 
 		//Adds bishops
 		col = 2;
 		pieces[col][row] = new Bishop(row, col, color);
+		currarray.add(pieces[col][row]);
 		col = 5;
 		pieces [col][row] = new Bishop(row, col, color);
+		currarray.add(pieces[col][row]);
 
 		col = 3;
 		pieces[col][row] = new Queen(row, col, color);
+		currarray.add(pieces[col][row]);
 
 		col = 4;
 		pieces[col][row] = new King(row, col, color);
+		currarray.add(pieces[col][row]);
 	}
 
 	/**
