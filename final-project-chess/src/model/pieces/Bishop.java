@@ -41,11 +41,6 @@ public class Bishop extends ChessPiece {
 			curCol += colOff;
 			curRow += rowOff;
 		}
-<<<<<<< HEAD
-
-		// setPosition(row, col);
-=======
->>>>>>> branch 'Testing' of https://github.com/CSC335-Fall2021/csc-335-chess-jswani-harshvardhan-gmendlik-chris13136
 		return true;
 	}
 
