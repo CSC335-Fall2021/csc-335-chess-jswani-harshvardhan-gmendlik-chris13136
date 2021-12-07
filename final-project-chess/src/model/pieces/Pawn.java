@@ -8,7 +8,7 @@ public class Pawn extends ChessPiece {
 	}
 
 	@Override
-	boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
 		// up one check
 		int offset = 1;
 		if (this.color == 1) {

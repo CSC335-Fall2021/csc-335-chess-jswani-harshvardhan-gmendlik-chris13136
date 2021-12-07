@@ -7,7 +7,7 @@ public class Bishop extends ChessPiece {
 	}
 
 	@Override
-	boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
 		// cant move like this
 		if(this.row == row || this.col == col) {
 			return false;
