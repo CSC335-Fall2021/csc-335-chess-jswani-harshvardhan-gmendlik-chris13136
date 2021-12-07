@@ -7,7 +7,7 @@ public class Rook extends ChessPiece {
 	}
 
 	@Override
-	boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
 		//diagonal check 
 		if(this.row != row && this.col != col) {
 			return false;
