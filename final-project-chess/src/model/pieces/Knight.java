@@ -8,6 +8,9 @@ public class Knight extends ChessPiece {
 
 	@Override
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+		if(pieces[col][row].getColor() == this.color) {
+			return false;
+		}
 		// row +1 col +2
 		if (this.row + 1 == row && this.col + 2 == col) {
 			setPosition(row, col);

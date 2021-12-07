@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.ChessModel;
 import model.pieces.*;
 
@@ -22,6 +24,7 @@ public class ChessController {
     	if(board[curCol][curRow] != null) {
     		ChessPiece cur = board[newCol][newRow];
     		if(cur instanceof King) {
+    			// no moving into check rule
     			if(!canBeAttacked(newCol, newRow)) {
     				return false;
     			}
@@ -32,8 +35,16 @@ public class ChessController {
     }
 
 	private boolean canBeAttacked(int newCol, int newRow) {
-		// for each piece in opp list isV
-		
+		// for each piece in opp list isVaildMove on newCol,newRow
+		ArrayList<ChessPiece> oppList = model.getBlack();
+		if (model.getTurn() == 1) {
+			oppList = model.getWhite();
+		}
+		for (ChessPiece p : oppList) {
+			if(p.isValidMove(newRow, newCol, board)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
