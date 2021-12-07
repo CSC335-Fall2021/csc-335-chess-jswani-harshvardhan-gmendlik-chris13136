@@ -1,5 +1,7 @@
 package view;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,13 +14,15 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.ChessModel;
-import model.pieces.ChessPiece;
+import model.pieces.*;
 
 import javax.swing.*;
 
@@ -32,7 +36,7 @@ public class ChessView extends Application implements Observer {
 	 * @param stage the stage for the application
 	 */
 	@Override
-	public void start(Stage stage){
+	public void start(Stage stage) throws FileNotFoundException {
 		model = new ChessModel();
 		control = new ChessController(model);
 		this.stage = stage;
@@ -54,7 +58,7 @@ public class ChessView extends Application implements Observer {
 	 * Sets the scene on the basis of the argument string provided.
 	 * @param page
 	 */
-	public void setScene(String page){
+	public void setScene(String page) throws FileNotFoundException {
 		Scene scene = stage.getScene();
 		BorderPane root =(BorderPane) scene.getRoot();
 		GridPane pane = (GridPane) root.getBottom();
@@ -99,16 +103,42 @@ public class ChessView extends Application implements Observer {
 				}
 			}
 		}
+		addPieces(pane);
 	}
 
 
-	public void addPieces(GridPane pane){
+	public void addPieces(GridPane pane) throws FileNotFoundException {
 		ChessPiece[][] pieces = control.getBoard();
 		for (int row=0; row<=7; row++){
 			for (int col=0; col<=7; col++){
-				String imgStr="";
-				if (pieces[col][row]!=null){
+				String imgStr="img/";
+				ChessPiece piece= pieces[col][row];
+				if (piece!=null){
+					if (piece.getColor()==0){
+						imgStr+="white";
+					}else imgStr+="black";
 
+					if (piece instanceof Pawn){
+						imgStr+="Pawn";
+					}else if (piece instanceof King){
+						imgStr+="King";
+					}else if(piece instanceof Queen){
+						imgStr+="Queen";
+					}else if (piece instanceof Bishop){
+						imgStr+="Bishop";
+					}else if (piece instanceof Knight){
+						imgStr+="Knight";
+					}else if (piece instanceof Rook){
+						imgStr+="Rook";
+					}
+					imgStr+=".png";
+					FileInputStream input = new FileInputStream(imgStr);
+					Image img = new Image(input);
+					ImageView imageView = new ImageView(img);
+					imageView.setFitHeight(80);
+					imageView.setFitWidth(80);
+					HBox square = (HBox) getNodeByRowColumnIndex(8-row, 8-col, pane);
+					square.getChildren().add(imageView);
 				}
 			}
 		}
@@ -117,14 +147,12 @@ public class ChessView extends Application implements Observer {
 	public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
 		Node result = null;
 		ObservableList<Node> children = gridPane.getChildren();
-
 		for (Node node : children) {
 			if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
 				result = node;
 				break;
 			}
 		}
-
 		return result;
 	}
 
