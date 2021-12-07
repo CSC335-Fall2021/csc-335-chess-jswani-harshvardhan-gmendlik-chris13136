@@ -96,7 +96,6 @@ public class ChessView extends Application implements Observer {
 			rowClicked2=boardRow;
 			colClicked2=boardCol;
 			if (control.makeMove(colClicked1,rowClicked1, colClicked2, rowClicked2)){
-				control.setTurn();
 				selectedPiece=false;
 				System.out.println("Made move from ("+colClicked1+","+rowClicked1+") to ("+colClicked2+","+rowClicked2);
 				if (control.getTurn()==0){
@@ -149,6 +148,7 @@ public class ChessView extends Application implements Observer {
 
 	/**
 	 * Fetches images from Wikimedia Commons and stores them in a hashmap for later use.
+	 *
 	 */
 	public void getImages(){
 		images.put("blackBishop", new Image("https://upload.wikimedia.org/wikipedia/commons/8/81/Chess_bdt60.png"));
