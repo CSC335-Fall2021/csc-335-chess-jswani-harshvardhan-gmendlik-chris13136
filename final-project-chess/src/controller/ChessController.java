@@ -16,5 +16,6 @@ public class ChessController {
     }
 
 
+
     //TODO: implement a method that validates and makes a move in the model.
 }
