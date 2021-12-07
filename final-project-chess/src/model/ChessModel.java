@@ -102,7 +102,19 @@ public class ChessModel extends Observable {
 		return pieces;
 	}
 
-
+	/**
+	 * @return returns the list of white pieces
+	 */
+	public ArrayList<ChessPiece> getWhite(){
+		return white;
+	}
+	/**
+	 * @return returns the list of black pieces
+	 */
+	public ArrayList<ChessPiece> getBlack(){
+		return black;
+	}
+	
 	/**
 	 * Returns the int representing the player that plays next.
 	 * @return 0 if white plays next, 1 otherwise.

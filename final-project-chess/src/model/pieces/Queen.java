@@ -7,7 +7,7 @@ public class Queen extends ChessPiece {
 	}
 
 	@Override
-	boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
 		// TODO Auto-generated method stub
 		return false;
 	}

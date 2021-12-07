@@ -26,7 +26,7 @@ public abstract class ChessPiece {
 	 * @param pieces The board of pieces
 	 * @return True if the move is valid.
 	 */
-	abstract boolean isValidMove(int row, int col, ChessPiece[][] pieces);
+	public abstract boolean isValidMove(int row, int col, ChessPiece[][] pieces);
 
 	/**
 	 * Sets the position of the piece
