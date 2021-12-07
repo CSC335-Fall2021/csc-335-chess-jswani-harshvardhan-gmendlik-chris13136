@@ -1,18 +1,27 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import model.ChessModel;
+import model.pieces.Rook;
+
 class ModelTest {
-	@Before
+	private ChessModel model;
+
+	@BeforeEach
 	void setUp() {
 
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void loadGameTest() {
+		this.model = new ChessModel("saves/InitialBoard.txt");
+		assertEquals(ChessModel.WHITE, this.model.getBoard()[0][0].getColor());
+		assertTrue(this.model.getBoard()[0][0] instanceof Rook);
+		ChessModel.printBoard(this.model.getBoard(), ChessModel.WHITE);
 	}
 }
