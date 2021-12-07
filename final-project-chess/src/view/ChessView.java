@@ -3,6 +3,7 @@ package view;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -28,8 +29,19 @@ import model.pieces.*;
 
 public class ChessView extends Application implements Observer {
 
+	ChessModel model;
+	ChessController control;
+	Stage stage;
+	GridPane pane;
+	int rowClicked1;
+	int colClicked1;
+	int rowClicked2;
+	int colClicked2;
+	boolean selectedPiece;
+	HashMap<String,Image> images;
 
 	public class SquareClicked implements EventHandler<MouseEvent>{
+
 
 		@Override
 		public void handle(MouseEvent mouseEvent) {
@@ -52,27 +64,54 @@ public class ChessView extends Application implements Observer {
 					selectedPiece = true;
 					rowClicked1 = boardRow;
 					colClicked1 = boardCol;
+					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
 					return;
 				}else{
+					System.out.println("Wrong player.");
 					mouseEvent.consume();
 					return;
 				}
 			}else{
+				ChessPiece piece = board[boardCol][boardRow];
+				//This condition means that the player reselected their piece.
 
+				if (piece==null){
+					moveImpl(mouseEvent, boardCol, boardRow);
+				}
+				if(piece.getColor()==turn){
+					rowClicked1=boardRow;
+					colClicked1=boardCol;
+					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
+					return;
+				}
+				//This condition means that the player clicked either on an empty or on an enemy piece.
+				else{
+					moveImpl(mouseEvent, boardCol, boardRow);
+				}
 			}
 
 		}
+
+		private void moveImpl(MouseEvent mouseEvent, int boardCol, int boardRow) {
+			rowClicked2=boardRow;
+			colClicked2=boardCol;
+			if (control.makeMove(colClicked1,rowClicked1, colClicked2, rowClicked2)){
+				control.setTurn();
+				selectedPiece=false;
+				System.out.println("Made move from ("+colClicked1+","+rowClicked1+") to ("+colClicked2+","+rowClicked2);
+				if (control.getTurn()==0){
+					System.out.println("White plays next");
+				}
+				else {
+					System.out.println("Black plays next");
+				}
+			}else{
+				System.out.println("Invalid move");
+				mouseEvent.consume();
+			}
+		}
 	}
 
-	ChessModel model;
-	ChessController control;
-	Stage stage;
-	GridPane pane;
-	int rowClicked1;
-	int colClicked1;
-	int rowClicked2;
-	int colClicked2;
-	boolean selectedPiece;
 
 	/**
 	 * Launches the application. Creates the new model and control and sets up the initial scene.
@@ -80,6 +119,9 @@ public class ChessView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage stage) throws FileNotFoundException {
+
+		images = new HashMap<>();
+		getImages();
 
 		//Arbitrarily chosen value that is not possible for a click.
 		rowClicked1=100;
@@ -105,6 +147,23 @@ public class ChessView extends Application implements Observer {
 		stage.show();
 	}
 
+	/**
+	 * Fetches images from Wikimedia Commons and stores them in a hashmap for later use.
+	 */
+	public void getImages(){
+		images.put("blackBishop", new Image("https://upload.wikimedia.org/wikipedia/commons/8/81/Chess_bdt60.png"));
+		images.put("whiteBishop", new Image("https://upload.wikimedia.org/wikipedia/commons/9/9b/Chess_blt60.png"));
+		images.put("blackKing", new Image("https://upload.wikimedia.org/wikipedia/commons/e/e3/Chess_kdt60.png"));
+		images.put("whiteKing", new Image("https://upload.wikimedia.org/wikipedia/commons/3/3b/Chess_klt60.png"));
+		images.put("blackKnight", new Image("https://upload.wikimedia.org/wikipedia/commons/f/f1/Chess_ndt60.png"));
+		images.put("whiteKnight", new Image("https://upload.wikimedia.org/wikipedia/commons/2/28/Chess_nlt60.png"));
+		images.put("blackPawn", new Image("https://upload.wikimedia.org/wikipedia/commons/c/cd/Chess_pdt60.png"));
+		images.put("whitePawn", new Image("https://upload.wikimedia.org/wikipedia/commons/0/04/Chess_plt60.png"));
+		images.put("blackQueen", new Image("https://upload.wikimedia.org/wikipedia/commons/a/af/Chess_qdt60.png"));
+		images.put("whiteQueen", new Image("https://upload.wikimedia.org/wikipedia/commons/4/49/Chess_qlt60.png"));
+		images.put("blackRook", new Image("https://upload.wikimedia.org/wikipedia/commons/a/a0/Chess_rdt60.png"));
+		images.put("whiteRook", new Image("https://upload.wikimedia.org/wikipedia/commons/5/5c/Chess_rlt60.png"));
+	}
 	/**
 	 * Sets the scene on the basis of the argument string provided.
 	 * @param page
@@ -168,23 +227,13 @@ public class ChessView extends Application implements Observer {
 	 * @throws FileNotFoundException
 	 */
 	public void addPieces(GridPane pane) throws FileNotFoundException {
-		String[] curPath = new File(".").getAbsolutePath().split("\\\\");
-		String curPathStr="";
-		if (curPath[curPath.length-2].equals("csc-335-chess-jswani-harshvardhan-gmendlik-chris13136")){
-			curPathStr+="final-project-chess/src/view/img/";
-		}else if(curPath[curPath.length-2].equals("final-project-chess")){
-			curPathStr+="src/view/img/";
-		}else if (curPath[curPath.length-2].equals("src")){
-			curPathStr+="view/img/";
-		}else if (curPath[curPath.length-2].equals("view")){
-			curPathStr+="img/";
-		}
+
 		ChessPiece[][] pieces = control.getBoard();
 		for (int row=0; row<=7; row++){
 			for (int col=0; col<=7; col++){
 				ChessPiece piece= pieces[col][row];
 				if (piece!=null){
-					String imgStr=curPathStr;
+					String imgStr="";
 					if (piece.getColor()==0){
 						imgStr+="white";
 					}else imgStr+="black";
@@ -202,10 +251,7 @@ public class ChessView extends Application implements Observer {
 					}else if (piece instanceof Rook){
 						imgStr+="Rook";
 					}
-					imgStr+=".png";
-					FileInputStream input = new FileInputStream(imgStr);
-					Image img = new Image(input);
-					ImageView imageView = new ImageView(img);
+					ImageView imageView = new ImageView(images.get(imgStr));
 					imageView.setFitHeight(80);
 					imageView.setFitWidth(80);
 					HBox square = (HBox) getNodeByRowColumnIndex(8-row, col+1, pane);
