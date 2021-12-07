@@ -42,6 +42,7 @@ public class ChessController {
     	return model.getTurn();
 	}
 
+
 	private boolean canBeAttacked(int newCol, int newRow) {
 		// for each piece in opp list isVaildMove on newCol,newRow
 		ArrayList<ChessPiece> oppList = model.getBlack();
