@@ -34,7 +34,7 @@ public class ChessView extends Application implements Observer {
 	 */
 	@Override
 	public void start(Stage stage) throws FileNotFoundException {
-		System.out.println(new File(".").getAbsolutePath());
+
 		model = new ChessModel();
 		control = new ChessController(model);
 		this.stage = stage;
@@ -107,12 +107,23 @@ public class ChessView extends Application implements Observer {
 
 
 	public void addPieces(GridPane pane) throws FileNotFoundException {
+		String[] curPath = new File(".").getAbsolutePath().split("\\\\");
+		String curPathStr="";
+		if (curPath[curPath.length-2].equals("csc-335-chess-jswani-harshvardhan-gmendlik-chris13136")){
+			curPathStr+="final-project-chess/src/view/img/";
+		}else if(curPath[curPath.length-2].equals("final-project-chess")){
+			curPathStr+="src/view/img/";
+		}else if (curPath[curPath.length-2].equals("src")){
+			curPathStr+="view/img/";
+		}else if (curPath[curPath.length-2].equals("view")){
+			curPathStr+="img/";
+		}
 		ChessPiece[][] pieces = control.getBoard();
 		for (int row=0; row<=7; row++){
 			for (int col=0; col<=7; col++){
-				String imgStr="final-project-chess/src/view/img/";
 				ChessPiece piece= pieces[col][row];
 				if (piece!=null){
+					String imgStr=curPathStr;
 					if (piece.getColor()==0){
 						imgStr+="white";
 					}else imgStr+="black";
