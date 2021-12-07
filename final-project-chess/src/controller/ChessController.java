@@ -26,20 +26,32 @@ public class ChessController {
 	public ChessPiece[][] getBoard() {
 		return board;
 	}
+  
+  public boolean makeMove(int curCol, int curRow, int newCol, int newRow) {
+    	if(board[curCol][curRow] != null) {
+    		ChessPiece cur = board[newCol][newRow];
+    		if(cur instanceof King) {
+    			// no moving into check rule
+    			if(!canBeAttacked(newCol, newRow)) {
+    				return false;
+    			}
+    		}
+    		if(cur.isValidMove(newCol, newRow, board)) {
+    			cur.setPosition(newCol, newRow);
+    		}
+    		
+    	}
+    	return false;
+  }
 
-	public boolean makeMove(int curCol, int curRow, int newCol, int newRow) {
-		if (board[curCol][curRow] != null) {
-			ChessPiece cur = board[newCol][newRow];
-			if (cur instanceof King) {
-				// no moving into check rule
-				if (!canBeAttacked(newCol, newRow)) {
-					return false;
-				}
-			}
-			cur.isValidMove(newCol, newRow, board);
-		}
-		return false;
+	/**
+	 * This method returns which player gets to play in the current turn.
+	 * @return 0 for white, 1 for black.
+	 */
+	public int getTurn(){
+    	return model.getTurn();
 	}
+
 
 	private boolean canBeAttacked(int newCol, int newRow) {
 		// for each piece in opp list isVaildMove on newCol,newRow

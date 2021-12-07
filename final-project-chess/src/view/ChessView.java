@@ -9,6 +9,8 @@ import java.util.Observer;
 import controller.ChessController;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -16,19 +18,12 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import model.ChessModel;
 import model.pieces.Bishop;
 import model.pieces.ChessPiece;
@@ -40,9 +35,52 @@ import model.pieces.Rook;
 
 @SuppressWarnings("deprecation")
 public class ChessView extends Application implements Observer {
+
+
+	public class SquareClicked implements EventHandler<MouseEvent>{
+
+		@Override
+		public void handle(MouseEvent mouseEvent) {
+			ChessPiece[][] board = control.getBoard();
+			int turn = control.getTurn();
+			HBox square = (HBox) mouseEvent.getSource();
+			int rowIndex = GridPane.getRowIndex(square);
+			int colIndex = GridPane.getColumnIndex(square);
+			int boardCol = colIndex-1;
+			int boardRow = -1*(rowIndex-8);
+			//TODO: Remove these print statements.
+			System.out.println("row: "+ boardRow);
+			System.out.println("col: "+ boardCol);
+			if (!selectedPiece){
+				ChessPiece piece = board[boardCol][boardRow];
+				if (piece==null){
+					mouseEvent.consume();
+					return;
+				}else if (piece.getColor()==turn){
+					selectedPiece = true;
+					rowClicked1 = boardRow;
+					colClicked1 = boardCol;
+					return;
+				}else{
+					mouseEvent.consume();
+					return;
+				}
+			}else{
+
+			}
+
+		}
+	}
+
 	ChessModel model;
 	ChessController control;
 	Stage stage;
+	GridPane pane;
+	int rowClicked1;
+	int colClicked1;
+	int rowClicked2;
+	int colClicked2;
+	boolean selectedPiece;
 
 	/**
 	 * Launches the application. Creates the new model and control and sets up
@@ -53,6 +91,13 @@ public class ChessView extends Application implements Observer {
 	@Override
 	public void start(Stage stage) throws FileNotFoundException {
 
+		//Arbitrarily chosen value that is not possible for a click.
+		rowClicked1=100;
+		colClicked1=100;
+		rowClicked2=100;
+		colClicked2=100;
+		selectedPiece=false;
+
 		model = new ChessModel();
 		control = new ChessController(model);
 		this.stage = stage;
@@ -62,8 +107,8 @@ public class ChessView extends Application implements Observer {
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
-		GridPane pane = new GridPane();
-		pane.setPrefSize(960, 960);
+		pane = new GridPane();
+		pane.setPrefSize(960,960);
 		root.setBottom(pane);
 		addMenu();
 		setScene("game");
@@ -122,12 +167,20 @@ public class ChessView extends Application implements Observer {
 							color = Color.WHITE;
 						}
 					}
+					square.setDisable(false);
+					square.addEventHandler(MouseEvent.MOUSE_CLICKED,new SquareClicked());
+
 				}
 			}
 		}
 		addPieces(pane);
 	}
 
+	/**
+	 * This method adds chess pieces to the board based on their positions.
+	 * @param pane GridPane containing the chess board
+	 * @throws FileNotFoundException
+	 */
 	public void addPieces(GridPane pane) throws FileNotFoundException {
 		String[] curPath = new File(".").getAbsolutePath().split("\\\\");
 		String curPathStr = "";

@@ -9,7 +9,7 @@ public class Pawn extends ChessPiece {
 
 	@Override
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
-		if(pieces[col][row].getColor() == this.color) {
+		if(pieces[col][row] != null && pieces[col][row].getColor() == this.color) {
 			return false;
 		}
 		// up one check
