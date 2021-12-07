@@ -102,6 +102,7 @@ public class ChessController {
 			// find attacker/s
 			ArrayList<ChessPiece> attackersList = new ArrayList<ChessPiece>();
 			ArrayList<ChessPiece> needblockList = new ArrayList<ChessPiece>();
+			ArrayList<ChessPiece> blockedList = new ArrayList<ChessPiece>();
 			for (ChessPiece p : pieceList) {
 				if (p.isValidMove(curRow, curCol, board)) {
 					attackersList.add(p);
@@ -113,23 +114,35 @@ public class ChessController {
 			for (ChessPiece p : attackersList) {
 				curRow = p.getRow();
 				curCol = p.getCol();
+				boolean needBlock = true;
 				for (ChessPiece x : pieceList) {
 					if(x.isValidMove(curRow, curCol, board)) {
-						needblockList.add(p);
+						needBlock = false;
 					}
+				}
+				if (needBlock) {
+					needblockList.add(p);
+				}
 			}
-				if(needblockList.size() != 0) {
+			if(needblockList.size() != 0) {
 					class Touple{
 						public int col;
 						public int row;
+						public Touple(int col, int row) {
+							this.col = col;
+							this.row = row;
+						}
 					}
 					// 3. block (aka canBeAttacked or isValid move for each piece 
 					// 	  in opposite colors list on each of the in between squares)
+					
 					for (ChessPiece b : needblockList) {
 						if(b instanceof Pawn) {
+							// cant move, cant take, pawn cant be blocked
 							return true;
 						}
 						if(b instanceof Knight) {
+							// cant move, cant take, Knight cant be blocked
 							return true;
 						}
 						if(b instanceof Bishop) {
@@ -149,7 +162,18 @@ public class ChessController {
 							}
 							
 							while (bCol != king.getCol()) {
-								
+								Touple cord = new Touple(bCol, bRow);
+								oneNeedBlock.add(cord);
+								bRow += rowIdd;
+								bCol += colIdd;
+							}
+							for (Touple c : oneNeedBlock) {
+								for (ChessPiece f : pieceList) {
+									if(f.isValidMove(c.col, c.row, board)) {
+										blockedList.add(b);
+										break;
+									}
+								}
 							}
 							
 						}
@@ -160,19 +184,26 @@ public class ChessController {
 							
 						}
 					}
+					needblockList.removeAll(blockedList);
+					if(needblockList.size() !=0) {
+						//cant move, cant take, cant block
+						return true;
+					}
+					else {
+						// cant move, cant take, can block
+						// TODO check to see if the same move blocks all the list, else true
+						return false;
+					}
 				}
 				else {
 					// can't move can take 
 					return false;
 				}
 				
-			}
 		}
 		else {
 			//can move out
 			return false;
 		}
-
-		return moveflag && attackFlag && blockFlag;
 	}
 }
