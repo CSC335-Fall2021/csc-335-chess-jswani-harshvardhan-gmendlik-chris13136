@@ -4,13 +4,14 @@ public abstract class ChessPiece {
 
 	protected int row;
 	protected int col;
-	protected final int color; //TODO: Color needs to be to determine valid move. especially for pawns.
+	protected final int color; // TODO: Color needs to be to determine valid
+								// move. especially for pawns.
 
 	public ChessPiece(int row, int col, int color) {
 		this.setPosition(row, col);
 		this.color = color;
 	}
-	
+
 	/**
 	 * 
 	 * @return the color of the piece
@@ -18,6 +19,7 @@ public abstract class ChessPiece {
 	public int getColor() {
 		return this.color;
 	}
+
 	/**
 	 * 
 	 * @return the col of the piece
@@ -40,7 +42,8 @@ public abstract class ChessPiece {
 	 * @param pieces The board of pieces
 	 * @return True if the move is valid.
 	 */
-	public abstract boolean isValidMove(int row, int col, ChessPiece[][] pieces);
+	public abstract boolean isValidMove(int row, int col,
+			ChessPiece[][] pieces);
 
 	/**
 	 * Sets the position of the piece
@@ -51,5 +54,12 @@ public abstract class ChessPiece {
 	void setPosition(int row, int col) {
 		this.row = row;
 		this.col = col;
+	}
+
+	public String toString() {
+		String out = "Row: " + Integer.toString(this.row) + ", Col: "
+				+ Integer.toString(this.col) + ", Color: "
+				+ Integer.toString(this.color) + ".";
+		return out;
 	}
 }
