@@ -8,6 +8,9 @@ public class Bishop extends ChessPiece {
 
 	@Override
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+		if(pieces[col][row].getColor() == this.color) {
+			return false;
+		}
 		// cant move like this
 		if (this.row == row || this.col == col) {
 			return false;
@@ -38,8 +41,11 @@ public class Bishop extends ChessPiece {
 			curCol += colOff;
 			curRow += rowOff;
 		}
+<<<<<<< HEAD
 
 		// setPosition(row, col);
+=======
+>>>>>>> branch 'Testing' of https://github.com/CSC335-Fall2021/csc-335-chess-jswani-harshvardhan-gmendlik-chris13136
 		return true;
 	}
 
