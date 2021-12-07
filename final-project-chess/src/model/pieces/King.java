@@ -16,7 +16,6 @@ public class King extends ChessPiece {
 		}
 		if ((this.row + 1 == row || this.row - 1 == row || this.row == row) && 
 				(this.col + 1 == col || this.row - 1 == col || this.row == col)) {
-			setPosition(row, col);
 			return true;
 		}
 		return false;

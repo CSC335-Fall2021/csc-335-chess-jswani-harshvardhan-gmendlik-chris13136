@@ -36,7 +36,6 @@ public class Bishop extends ChessPiece {
 			curCol += colOff;
 			curRow += rowOff;
 		}
-		setPosition(row, col);
 		return true;
 	}
 
