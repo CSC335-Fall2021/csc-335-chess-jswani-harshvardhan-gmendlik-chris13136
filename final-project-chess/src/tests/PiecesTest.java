@@ -33,6 +33,6 @@ class PiecesTest {
 		assertTrue(white1.isValidMove(1, 1, pieces));
 		// and past enemy piece
 		assertFalse(white1.isValidMove(2, 2, pieces));
-		ChessModel.printBoard(pieces);
+		ChessModel.printBoard(pieces, ChessModel.WHITE);
 	}
 }
