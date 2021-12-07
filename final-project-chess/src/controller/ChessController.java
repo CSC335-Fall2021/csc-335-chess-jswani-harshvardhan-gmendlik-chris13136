@@ -34,6 +34,14 @@ public class ChessController {
     	return false;
     }
 
+	/**
+	 * This method returns which player gets to play in the current turn.
+	 * @return 0 for white, 1 for black.
+	 */
+	public int getTurn(){
+    	return model.getTurn();
+	}
+
 	private boolean canBeAttacked(int newCol, int newRow) {
 		// for each piece in opp list isVaildMove on newCol,newRow
 		ArrayList<ChessPiece> oppList = model.getBlack();
