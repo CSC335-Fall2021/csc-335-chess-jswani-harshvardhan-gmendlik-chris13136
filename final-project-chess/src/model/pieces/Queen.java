@@ -10,6 +10,10 @@ public class Queen extends ChessPiece {
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
 		// TODO Auto-generated method stub
 		
+		if(pieces[col][row].getColor() == this.color) {
+			return false;
+		}
+		
 		if(this.row == row) {
 			//right check
 			for (int i = this.col; i < col; i++) {
