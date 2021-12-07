@@ -1,7 +1,10 @@
 package model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Scanner;
 
 import model.pieces.Bishop;
 import model.pieces.ChessPiece;
@@ -11,13 +14,16 @@ import model.pieces.Pawn;
 import model.pieces.Queen;
 import model.pieces.Rook;
 
+@SuppressWarnings("deprecation")
 public class ChessModel extends Observable {
 
+	public static final int WHITE = 0;
+	public static final int BLACK = 1;
+
 	private ChessPiece[][] pieces; // ChessPiece[col][row]
-	private int turn; // represents the player that plays next 0 for white 1
-						// for black.
-	private ArrayList<ChessPiece> white; // arr of white peaces
-	private ArrayList<ChessPiece> black; // arr of black peaces
+	private int turn; // next player to move -- 0=white 1=black
+	private ArrayList<ChessPiece> white; // arr of white pieces
+	private ArrayList<ChessPiece> black; // arr of black pieces
 
 	/**
 	 * Constructor method for the model. Builds an 8*8 array containing
@@ -28,7 +34,15 @@ public class ChessModel extends Observable {
 		white = new ArrayList<ChessPiece>();
 		black = new ArrayList<ChessPiece>();
 		buildBoard();
-		turn = 0;
+		turn = WHITE;
+	}
+
+	public ChessModel(String fp) {
+		try {
+			loadGame(fp);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -40,8 +54,8 @@ public class ChessModel extends Observable {
 				pieces[col][row] = null;
 			}
 		}
-		addBackline(0);
-		addBackline(1);
+		addBackline(WHITE);
+		addBackline(BLACK);
 		int row = 1;
 		int color = 0;
 		for (int col = 0; col <= 7; col++) {
@@ -147,7 +161,7 @@ public class ChessModel extends Observable {
 	 * 
 	 * @param pieces
 	 */
-	void removePiece(int row, int col, ChessPiece[][] pieces) {
+	public void removePiece(int row, int col, ChessPiece[][] pieces) {
 		// remove references for garbage collection
 		pieces[col][row] = null;
 	}
@@ -164,7 +178,7 @@ public class ChessModel extends Observable {
 				ChessPiece currPiece = this.pieces[j][i];
 				if (currPiece instanceof Knight) {
 					if (currPiece.getColor() == 0) {
-						System.out.print("H ");
+						System.out.print("H "); // h for horse cause k is taken
 					} else {
 						System.out.print("h ");
 					}
@@ -204,6 +218,7 @@ public class ChessModel extends Observable {
 			}
 			System.out.println();
 		}
+		System.out.println("Turn: " + Integer.toString(this.turn));
 	}
 
 	/**
@@ -212,7 +227,7 @@ public class ChessModel extends Observable {
 	 * 
 	 * @param pieces ChessPiece[][] chess board to be printed
 	 */
-	public static void printBoard(ChessPiece[][] pieces) {
+	public static void printBoard(ChessPiece[][] pieces, final int turn) {
 		System.out.println("  a b c d e f g h ");
 		for (int i = 0; i < 8; i++) {
 			System.out.print(Integer.toString(i) + " ");
@@ -220,7 +235,7 @@ public class ChessModel extends Observable {
 				ChessPiece currPiece = pieces[j][i];
 				if (currPiece instanceof Knight) {
 					if (currPiece.getColor() == 0) {
-						System.out.print("H ");
+						System.out.print("H "); // h for horse cause k is taken
 					} else {
 						System.out.print("h ");
 					}
@@ -260,5 +275,77 @@ public class ChessModel extends Observable {
 			}
 			System.out.println();
 		}
+		System.out.println("Turn: " + Integer.toString(turn));
+	}
+
+	private void loadGame(String fp) throws FileNotFoundException {
+		Scanner s = null;
+		try {
+			File in = new File(fp);
+			s = new Scanner(in);
+		} catch (FileNotFoundException e) {
+			throw e;
+		}
+		this.pieces = new ChessPiece[8][8];
+		this.white = new ArrayList<ChessPiece>();
+		this.black = new ArrayList<ChessPiece>();
+
+		int currRow = 7;
+		while (s.hasNextLine()) {
+			String currLine = s.nextLine();
+			if (currRow == -1) {
+				this.turn = Integer.valueOf(currLine.charAt(0));
+				break;
+			}
+
+			for (int currCol = 0; currCol < currLine.length(); currCol++) {
+				char currPiece = currLine.charAt(currCol);
+				if (currPiece == '.') {
+					this.pieces[currCol][currRow] = null;
+					continue;
+				}
+
+				// Upper case is white, lower case is black
+				if (currPiece == 'B') {
+					this.pieces[currCol][currRow] = new Bishop(currRow,
+							currCol, WHITE);
+				} else if (currPiece == 'b') {
+					this.pieces[currCol][currRow] = new Bishop(currRow,
+							currCol, BLACK);
+				} else if (currPiece == 'K') {
+					this.pieces[currCol][currRow] = new King(currRow, currCol,
+							WHITE);
+				} else if (currPiece == 'k') {
+					this.pieces[currCol][currRow] = new King(currRow, currCol,
+							BLACK);
+				} else if (currPiece == 'H') {
+					this.pieces[currCol][currRow] = new Knight(currRow,
+							currCol, WHITE);
+				} else if (currPiece == 'h') { // h for horse cause k is taken
+					this.pieces[currCol][currRow] = new Knight(currRow,
+							currCol, BLACK);
+				} else if (currPiece == 'P') {
+					this.pieces[currCol][currRow] = new Pawn(currRow, currCol,
+							WHITE);
+				} else if (currPiece == 'p') {
+					this.pieces[currCol][currRow] = new Pawn(currRow, currCol,
+							BLACK);
+				} else if (currPiece == 'Q') {
+					this.pieces[currCol][currRow] = new Queen(currRow, currCol,
+							WHITE);
+				} else if (currPiece == 'q') {
+					this.pieces[currCol][currRow] = new Queen(currRow, currCol,
+							BLACK);
+				} else if (currPiece == 'R') {
+					this.pieces[currCol][currRow] = new Rook(currRow, currCol,
+							WHITE);
+				} else if (currPiece == 'r') {
+					this.pieces[currCol][currRow] = new Rook(currRow, currCol,
+							BLACK);
+				}
+			}
+			currRow--;
+		}
+		s.close();
 	}
 }

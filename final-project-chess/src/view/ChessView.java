@@ -23,9 +23,17 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.ChessModel;
-import model.pieces.*;
 
+import model.ChessModel;
+import model.pieces.Bishop;
+import model.pieces.ChessPiece;
+import model.pieces.King;
+import model.pieces.Knight;
+import model.pieces.Pawn;
+import model.pieces.Queen;
+import model.pieces.Rook;
+
+@SuppressWarnings("deprecation")
 public class ChessView extends Application implements Observer {
 
 
@@ -75,7 +83,9 @@ public class ChessView extends Application implements Observer {
 	boolean selectedPiece;
 
 	/**
-	 * Launches the application. Creates the new model and control and sets up the initial scene.
+	 * Launches the application. Creates the new model and control and sets up
+	 * the initial scene.
+	 * 
 	 * @param stage the stage for the application
 	 */
 	@Override
@@ -107,13 +117,14 @@ public class ChessView extends Application implements Observer {
 
 	/**
 	 * Sets the scene on the basis of the argument string provided.
+	 * 
 	 * @param page
 	 */
 	public void setScene(String page) throws FileNotFoundException {
 		Scene scene = stage.getScene();
-		BorderPane root =(BorderPane) scene.getRoot();
+		BorderPane root = (BorderPane) scene.getRoot();
 		GridPane pane = (GridPane) root.getBottom();
-		if (page.equals("game")){
+		if (page.equals("game")) {
 
 			int rowCount = 10;
 			int columnCount = 10;
@@ -139,18 +150,22 @@ public class ChessView extends Application implements Observer {
 			addNumbers(pane, 9);
 
 			Color color = Color.WHITE;
-			for (int row = 1; row<=8; row++){
-				for (int col = 1; col<=8; col++){
+			for (int row = 1; row <= 8; row++) {
+				for (int col = 1; col <= 8; col++) {
 					HBox square = new HBox();
-					square.setPrefSize(80,80);
-					square.setBackground(new Background(new BackgroundFill(color, null, null)));
-					square.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, null)));
+					square.setPrefSize(80, 80);
+					square.setBackground(new Background(
+							new BackgroundFill(color, null, null)));
+					square.setBorder(new Border(new BorderStroke(Color.BLACK,
+							BorderStrokeStyle.SOLID, null, null)));
 					pane.add(square, col, row);
 					square.setAlignment(Pos.CENTER);
-					if (col!=8){
-						if (color.equals(Color.WHITE)){
+					if (col != 8) {
+						if (color.equals(Color.WHITE)) {
 							color = Color.GRAY;
-						}else{ color = Color.WHITE;}
+						} else {
+							color = Color.WHITE;
+						}
 					}
 					square.setDisable(false);
 					square.addEventHandler(MouseEvent.MOUSE_CLICKED,new SquareClicked());
@@ -161,7 +176,6 @@ public class ChessView extends Application implements Observer {
 		addPieces(pane);
 	}
 
-
 	/**
 	 * This method adds chess pieces to the board based on their positions.
 	 * @param pane GridPane containing the chess board
@@ -169,57 +183,62 @@ public class ChessView extends Application implements Observer {
 	 */
 	public void addPieces(GridPane pane) throws FileNotFoundException {
 		String[] curPath = new File(".").getAbsolutePath().split("\\\\");
-		String curPathStr="";
-		if (curPath[curPath.length-2].equals("csc-335-chess-jswani-harshvardhan-gmendlik-chris13136")){
-			curPathStr+="final-project-chess/src/view/img/";
-		}else if(curPath[curPath.length-2].equals("final-project-chess")){
-			curPathStr+="src/view/img/";
-		}else if (curPath[curPath.length-2].equals("src")){
-			curPathStr+="view/img/";
-		}else if (curPath[curPath.length-2].equals("view")){
-			curPathStr+="img/";
+		String curPathStr = "";
+		if (curPath[curPath.length - 2].equals(
+				"csc-335-chess-jswani-harshvardhan-gmendlik-chris13136")) {
+			curPathStr += "final-project-chess/src/view/img/";
+		} else if (curPath[curPath.length - 2].equals("final-project-chess")) {
+			curPathStr += "src/view/img/";
+		} else if (curPath[curPath.length - 2].equals("src")) {
+			curPathStr += "view/img/";
+		} else if (curPath[curPath.length - 2].equals("view")) {
+			curPathStr += "img/";
 		}
 		ChessPiece[][] pieces = control.getBoard();
-		for (int row=0; row<=7; row++){
-			for (int col=0; col<=7; col++){
-				ChessPiece piece= pieces[col][row];
-				if (piece!=null){
-					String imgStr=curPathStr;
-					if (piece.getColor()==0){
-						imgStr+="white";
-					}else imgStr+="black";
+		for (int row = 0; row <= 7; row++) {
+			for (int col = 0; col <= 7; col++) {
+				ChessPiece piece = pieces[col][row];
+				if (piece != null) {
+					String imgStr = curPathStr;
+					if (piece.getColor() == 0) {
+						imgStr += "white";
+					} else
+						imgStr += "black";
 
-					if (piece instanceof Pawn){
-						imgStr+="Pawn";
-					}else if (piece instanceof King){
-						imgStr+="King";
-					}else if(piece instanceof Queen){
-						imgStr+="Queen";
-					}else if (piece instanceof Bishop){
-						imgStr+="Bishop";
-					}else if (piece instanceof Knight){
-						imgStr+="Knight";
-					}else if (piece instanceof Rook){
-						imgStr+="Rook";
+					if (piece instanceof Pawn) {
+						imgStr += "Pawn";
+					} else if (piece instanceof King) {
+						imgStr += "King";
+					} else if (piece instanceof Queen) {
+						imgStr += "Queen";
+					} else if (piece instanceof Bishop) {
+						imgStr += "Bishop";
+					} else if (piece instanceof Knight) {
+						imgStr += "Knight";
+					} else if (piece instanceof Rook) {
+						imgStr += "Rook";
 					}
-					imgStr+=".png";
+					imgStr += ".png";
 					FileInputStream input = new FileInputStream(imgStr);
 					Image img = new Image(input);
 					ImageView imageView = new ImageView(img);
 					imageView.setFitHeight(80);
 					imageView.setFitWidth(80);
-					HBox square = (HBox) getNodeByRowColumnIndex(8-row, col+1, pane);
+					HBox square = (HBox) getNodeByRowColumnIndex(8 - row,
+							8 - col, pane);
 					square.getChildren().add(imageView);
 				}
 			}
 		}
 	}
 
-	public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+	public Node getNodeByRowColumnIndex(final int row, final int column,
+			GridPane gridPane) {
 		Node result = null;
 		ObservableList<Node> children = gridPane.getChildren();
 		for (Node node : children) {
-			if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+			if (GridPane.getRowIndex(node) == row
+					&& GridPane.getColumnIndex(node) == column) {
 				result = node;
 				break;
 			}
@@ -229,36 +248,38 @@ public class ChessView extends Application implements Observer {
 
 	/**
 	 * Adds numbers to both sides of the board.
+	 * 
 	 * @param pane The GridPane
-	 * @param col 0 for left, 9 for right.
+	 * @param col  0 for left, 9 for right.
 	 */
-	private void addNumbers(GridPane pane, int col){
-		for (int row=1; row<=8; row++){
+	private void addNumbers(GridPane pane, int col) {
+		for (int row = 1; row <= 8; row++) {
 			HBox numBox = new HBox();
-			Text text=new Text(Integer.toString(9-row));
+			Text text = new Text(Integer.toString(9 - row));
 			numBox.setDisable(true);
 			numBox.getChildren().add(text);
-			numBox.setPrefSize(80,80);
+			numBox.setPrefSize(80, 80);
 			numBox.setAlignment(Pos.CENTER);
-			pane.add(numBox,col,row);
+			pane.add(numBox, col, row);
 		}
 	}
 
 	/**
 	 * Adds Letters to the top and bottom of the board.
+	 * 
 	 * @param pane The grid pane.
-	 * @param row 0 for the top, 9 for the bottom.
+	 * @param row  0 for the top, 9 for the bottom.
 	 */
 	private void addLetters(GridPane pane, int row) {
 		char letter = 'a';
-		for (int col=1; col<9; col++){
+		for (int col = 1; col < 9; col++) {
 			HBox letterBox = new HBox();
-			Text text=new Text(Character.toString(letter));
+			Text text = new Text(Character.toString(letter));
 			letterBox.setDisable(true);
 			letterBox.getChildren().add(text);
-			letterBox.setPrefSize(80,80);
+			letterBox.setPrefSize(80, 80);
 			letterBox.setAlignment(Pos.CENTER);
-			pane.add(letterBox,col,row);
+			pane.add(letterBox, col, row);
 			letter++;
 		}
 	}
@@ -266,21 +287,21 @@ public class ChessView extends Application implements Observer {
 	/**
 	 * This method adds the menu bar at the top of the scene.
 	 */
-	public void addMenu(){
+	public void addMenu() {
 		Scene scene = stage.getScene();
 		MenuItem newGame = new MenuItem("New Game");
 		MenuItem saveGame = new MenuItem("Save Game");
 		MenuItem loadGame = new MenuItem("Load Game");
-		MenuButton menu = new MenuButton("Options", null, newGame, saveGame, loadGame);
+		MenuButton menu = new MenuButton("Options", null, newGame, saveGame,
+				loadGame);
 		HBox bar = new HBox(menu);
 		bar.setFillHeight(true);
 		bar.setPrefSize(800, 20);
-		bar.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
+		bar.setBackground(
+				new Background(new BackgroundFill(Color.GRAY, null, null)));
 		BorderPane root = (BorderPane) scene.getRoot();
 		root.setTop(bar);
 	}
-
-
 
 	@Override
 	public void update(Observable o, Object arg) {
