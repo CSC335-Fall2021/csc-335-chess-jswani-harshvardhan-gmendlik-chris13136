@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Observable;
 import java.util.Scanner;
 
 import model.pieces.Bishop;
@@ -25,7 +24,6 @@ import model.pieces.Pawn;
 import model.pieces.Queen;
 import model.pieces.Rook;
 
-@SuppressWarnings("deprecation")
 public class ChessModel {
 
 	public static final int WHITE = 0;
@@ -53,9 +51,15 @@ public class ChessModel {
 	 * 
 	 * @param toLoad File to load game from.
 	 * @throws FileNotFoundException
+	 * @throws NullPointerException
 	 */
-	public ChessModel(File toLoad) throws FileNotFoundException {
-		loadGame(toLoad);
+	public ChessModel(File toLoad)
+			throws FileNotFoundException, NullPointerException {
+		try {
+			loadGame(toLoad);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	/**
@@ -311,18 +315,19 @@ public class ChessModel {
 		System.out.println("Turn: " + Integer.toString(turn));
 	}
 
-
 	/**
 	 * Loads a game from the given file.
 	 * 
 	 * @param toLoad File to load game from
 	 * @throws FileNotFoundException
+	 * @throws NullPointerException
 	 */
-	public void loadGame(File toLoad) throws FileNotFoundException {
+	public void loadGame(File toLoad)
+			throws FileNotFoundException, NullPointerException {
 		Scanner s = null;
 		try {
 			s = new Scanner(toLoad);
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			throw e;
 		}
 		this.pieces = new ChessPiece[8][8];

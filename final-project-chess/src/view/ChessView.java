@@ -15,8 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
 import controller.ChessController;
 import javafx.application.Application;
@@ -55,8 +53,7 @@ import model.pieces.Pawn;
 import model.pieces.Queen;
 import model.pieces.Rook;
 
-
-public class ChessView extends Application{
+public class ChessView extends Application {
 
 	ChessModel model;
 	ChessController control;
@@ -161,18 +158,18 @@ public class ChessView extends Application{
 				System.out.println("Invalid move");
 				mouseEvent.consume();
 			}
-			HBox oldSquare = (HBox) getNodeByRowColumnIndex(8-rowClicked1, colClicked1+1, pane);
-			HBox newSquare = (HBox) getNodeByRowColumnIndex(8-rowClicked2, colClicked2+1, pane);
+			HBox oldSquare = (HBox) getNodeByRowColumnIndex(8 - rowClicked1,
+					colClicked1 + 1, pane);
+			HBox newSquare = (HBox) getNodeByRowColumnIndex(8 - rowClicked2,
+					colClicked2 + 1, pane);
 
 			ChessPiece[][] board = control.getBoard();
 
-			if (board[colClicked1][rowClicked1]==null) {
+			if (board[colClicked1][rowClicked1] == null) {
 				oldSquare.getChildren().clear();
 			}
 
 			newSquare.getChildren().clear();
-
-
 
 			ChessPiece piece = board[boardCol][boardRow];
 
@@ -467,16 +464,17 @@ public class ChessView extends Application{
 
 			FileChooser saveGameFC = new FileChooser();
 			saveGameFC.setInitialDirectory(currentDirectory.toFile());
-			saveGameFC.setTitle("Save File");
+			saveGameFC.setTitle("Save Game As");
 			saveGameFC.getExtensionFilters()
-					.addAll(new ExtensionFilter("All files", "*.*"));
+					.addAll(new ExtensionFilter("Text Files", "*.txt"));
 			File saveTo = saveGameFC.showSaveDialog(stage);
 			try {
 				if (saveTo == null)
 					return;
+
 				this.model.writeGame(saveTo);
 			} catch (IOException e) {
-				e.printStackTrace();
+				// Ignore
 			}
 			saveGameFC = null; // trash
 		});
@@ -486,19 +484,16 @@ public class ChessView extends Application{
 		loadGame.setOnAction(event -> {
 			FileChooser loadGameFC = new FileChooser();
 			loadGameFC.setInitialDirectory(currentDirectory.toFile());
-			loadGameFC.setTitle("Save File");
+			loadGameFC.setTitle("Load Game");
 			loadGameFC.getExtensionFilters()
-					.addAll(new ExtensionFilter("All files", "*.*"));
+					.addAll(new ExtensionFilter("Text Files", "*.txt"));
 			File toLoad = loadGameFC.showOpenDialog(stage);
 			try {
-				if (this.model == null)
-					return;
-
 				this.model = new ChessModel(toLoad);
 				this.control = new ChessController(this.model);
 				this.setScene("game");
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+			} catch (NullPointerException e) { // Cancel or force close, ignore
 			}
 			loadGameFC = null; // trash
 		});
@@ -514,5 +509,4 @@ public class ChessView extends Application{
 		BorderPane root = (BorderPane) scene.getRoot();
 		root.setTop(bar);
 	}
-
 }
