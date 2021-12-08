@@ -77,7 +77,7 @@ public class ChessController {
 			
 			isServer = false;
 			isConnected = true;
-			model.setMyTurn(false);
+			model.setTurn();
 			oos = new ObjectOutputStream(connection.getOutputStream());
 			ois = new ObjectInputStream(connection.getInputStream());
 
