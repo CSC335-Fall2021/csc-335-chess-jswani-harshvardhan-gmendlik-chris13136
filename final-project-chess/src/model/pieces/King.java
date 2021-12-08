@@ -4,6 +4,7 @@ public class King extends ChessPiece {
 
 	public King(int row, int col, int color) {
 		super(row, col, color);
+		name = "King";
 	}
 
 	@Override
