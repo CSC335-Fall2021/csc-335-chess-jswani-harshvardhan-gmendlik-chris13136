@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
@@ -170,7 +172,8 @@ public class ChessModel extends Observable {
 	 * Prints the model's current chess board to the console. White pieces
 	 * printed in upper case, black pieces printed in lower case.
 	 */
-	public void printBoard() {
+	public String printBoard() {
+		String out = "";
 		System.out.println("  a b c d e f g ");
 		for (int i = 0; i < 8; i++) {
 			System.out.print(Integer.toString(i) + " ");
@@ -179,46 +182,62 @@ public class ChessModel extends Observable {
 				if (currPiece instanceof Knight) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("H "); // h for horse cause k is taken
+						out += 'H';
 					} else {
 						System.out.print("h ");
+						out += 'h';
 					}
 				} else if (currPiece instanceof Pawn) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("P ");
+						out += 'P';
 					} else {
 						System.out.print("p ");
+						out += 'p';
 					}
 				} else if (currPiece instanceof Queen) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("Q ");
+						out += 'Q';
 					} else {
 						System.out.print("q ");
+						out += 'q';
 					}
 				} else if (currPiece instanceof King) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("K ");
+						out += 'K';
 					} else {
 						System.out.print("k ");
+						out += 'k';
 					}
 				} else if (currPiece instanceof Rook) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("R ");
+						out += 'R';
 					} else {
 						System.out.print("r ");
+						out += 'r';
 					}
 				} else if (currPiece instanceof Bishop) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("B ");
+						out += 'B';
 					} else {
 						System.out.print("b ");
+						out += 'b';
 					}
 				} else {
 					System.out.print(". ");
+					out += '.';
 				}
 			}
 			System.out.println();
+			out += '\n';
 		}
 		System.out.println("Turn: " + Integer.toString(this.turn));
+		out += Integer.toString(this.turn);
+		return out;
 	}
 
 	/**
@@ -294,7 +313,8 @@ public class ChessModel extends Observable {
 		while (s.hasNextLine()) {
 			String currLine = s.nextLine();
 			if (currRow == -1) {
-				this.turn = Integer.valueOf(currLine.charAt(0));
+				this.turn = Integer
+						.valueOf(Character.toString(currLine.charAt(0)));
 				break;
 			}
 
@@ -347,5 +367,77 @@ public class ChessModel extends Observable {
 			currRow--;
 		}
 		s.close();
+	}
+
+	public void writeGame(String filename) throws IOException {
+		String fp = "saves/" + filename;
+		File newF = new File(fp);
+		FileWriter fw = null;
+		try {
+			if (newF.createNewFile()) {
+				fw = new FileWriter(newF);
+				fw.write(this.boardToText());
+				System.out.println(
+						"Successfully saved game to " + filename + "!");
+			} else {
+				fw = new FileWriter(newF);
+				fw.write(this.boardToText());
+				System.out.println("Overwrote game at " + filename + ".");
+			}
+			fw.close();
+		} catch (IOException e) {
+			throw e;
+		}
+	}
+
+	private String boardToText() {
+		String out = "";
+		for (int i = 7; i >= 0; i--) { // row
+			for (int j = 0; j < 8; j++) { // col
+				ChessPiece currPiece = pieces[j][i];
+				if (currPiece instanceof Knight) {
+					if (currPiece.getColor() == 0) {
+						out += 'H'; // h for horse cause k is taken
+					} else {
+						out += 'h';
+					}
+				} else if (currPiece instanceof Pawn) {
+					if (currPiece.getColor() == 0) {
+						out += 'P';
+					} else {
+						out += 'p';
+					}
+				} else if (currPiece instanceof Queen) {
+					if (currPiece.getColor() == 0) {
+						out += 'Q';
+					} else {
+						out += 'q';
+					}
+				} else if (currPiece instanceof King) {
+					if (currPiece.getColor() == 0) {
+						out += 'K';
+					} else {
+						out += 'k';
+					}
+				} else if (currPiece instanceof Rook) {
+					if (currPiece.getColor() == 0) {
+						out += 'R';
+					} else {
+						out += 'r';
+					}
+				} else if (currPiece instanceof Bishop) {
+					if (currPiece.getColor() == 0) {
+						out += 'B';
+					} else {
+						out += 'b';
+					}
+				} else {
+					out += '.';
+				}
+			}
+			out += '\n';
+		}
+		out += Integer.toString(this.turn);
+		return out;
 	}
 }
