@@ -1,3 +1,12 @@
+
+/**
+ * @filename ChessModel.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Models a game of chess. Can create new games, as well as saving and
+ * loading games.
+ */
+
 package model;
 
 import java.io.File;
@@ -39,12 +48,14 @@ public class ChessModel extends Observable {
 		turn = WHITE;
 	}
 
-	public ChessModel(String fp) {
-		try {
-			loadGame(fp);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	/**
+	 * Builds a Chess model from a given file.
+	 * 
+	 * @param toLoad File to load game from.
+	 * @throws FileNotFoundException
+	 */
+	public ChessModel(File toLoad) throws FileNotFoundException {
+		loadGame(toLoad);
 	}
 
 	/**
@@ -150,12 +161,15 @@ public class ChessModel extends Observable {
 		return turn;
 	}
 
+	/**
+	 * Sets the turn to the other color.
+	 */
 	public void setTurn() {
-		if (turn == 0) {
-			turn = 1;
+		if (turn == WHITE) {
+			turn = BLACK;
 			return;
 		}
-		turn = 0;
+		turn = WHITE;
 	}
 
 	/**
@@ -297,11 +311,16 @@ public class ChessModel extends Observable {
 		System.out.println("Turn: " + Integer.toString(turn));
 	}
 
-	private void loadGame(String fp) throws FileNotFoundException {
+	/**
+	 * Loads a game from the given file.
+	 * 
+	 * @param toLoad File to load game from
+	 * @throws FileNotFoundException
+	 */
+	public void loadGame(File toLoad) throws FileNotFoundException {
 		Scanner s = null;
 		try {
-			File in = new File(fp);
-			s = new Scanner(in);
+			s = new Scanner(toLoad);
 		} catch (FileNotFoundException e) {
 			throw e;
 		}
@@ -369,20 +388,26 @@ public class ChessModel extends Observable {
 		s.close();
 	}
 
-	public void writeGame(String filename) throws IOException {
-		String fp = "saves/" + filename;
-		File newF = new File(fp);
+	/**
+	 * Writes the current state of the board to the given file. Will overwrite
+	 * a file if it already exists.
+	 * 
+	 * @param toSave File to save to game to
+	 * @throws IOException
+	 */
+	public void writeGame(File toSave) throws IOException {
 		FileWriter fw = null;
 		try {
-			if (newF.createNewFile()) {
-				fw = new FileWriter(newF);
+			if (toSave.createNewFile()) {
+				fw = new FileWriter(toSave);
+				fw.write(this.boardToText());
+				System.out.println("Successfully saved game to "
+						+ toSave.getName() + "!");
+			} else {
+				fw = new FileWriter(toSave);
 				fw.write(this.boardToText());
 				System.out.println(
-						"Successfully saved game to " + filename + "!");
-			} else {
-				fw = new FileWriter(newF);
-				fw.write(this.boardToText());
-				System.out.println("Overwrote game at " + filename + ".");
+						"Overwrote game at " + toSave.getName() + ".");
 			}
 			fw.close();
 		} catch (IOException e) {
@@ -390,6 +415,12 @@ public class ChessModel extends Observable {
 		}
 	}
 
+	/**
+	 * Returns a string encryption of the current state of the board. The
+	 * encryption is used for save files.
+	 * 
+	 * @return String encryption of board's state
+	 */
 	private String boardToText() {
 		String out = "";
 		for (int i = 7; i >= 0; i--) { // row

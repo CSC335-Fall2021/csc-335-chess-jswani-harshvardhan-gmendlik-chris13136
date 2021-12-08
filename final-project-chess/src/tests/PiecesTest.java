@@ -1,3 +1,11 @@
+
+/**
+ * @filename PiecesTest.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Tests the ChessPiece superclass and subclasses.
+ */
+
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,5 +42,9 @@ class PiecesTest {
 		// and past enemy piece
 		assertFalse(white1.isValidMove(2, 2, pieces));
 		ChessModel.printBoard(pieces, ChessModel.WHITE);
+
+		// TODO: add more bishop moves tests?
 	}
+
+	// TODO: add ChessPiece tests and subclasses tests
 }

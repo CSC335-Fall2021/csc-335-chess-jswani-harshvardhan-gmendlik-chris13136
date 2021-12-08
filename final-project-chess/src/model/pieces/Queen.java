@@ -1,17 +1,41 @@
+
+/**
+ * @filename Queen.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Queen chess piece implementation.
+ */
+
 package model.pieces;
 
 public class Queen extends ChessPiece {
 
+	/**
+	 * Creates a new queen piece.
+	 * 
+	 * @param row   Row to place the queen at
+	 * @param col   Column to place the queen at
+	 * @param color Team color of the queen
+	 */
 	public Queen(int row, int col, int color) {
 		super(row, col, color);
 		name = "Queen";
 	}
 
 	@Override
+	/**
+	 * Checks if the move is valid for the queen piece
+	 * 
+	 * @param row    Row to attempt to move to
+	 * @param col    Column to attempt to move to
+	 * @param pieces ChessPiece[][] array containing the board's pieces
+	 * @return Returns true if the queen can make the move
+	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
 		// TODO Auto-generated method stub
 
-		if (pieces[col][row] != null && pieces[col][row].getColor() == this.color) {
+		if (pieces[col][row] != null
+				&& pieces[col][row].getColor() == this.color) {
 			return false;
 		}
 

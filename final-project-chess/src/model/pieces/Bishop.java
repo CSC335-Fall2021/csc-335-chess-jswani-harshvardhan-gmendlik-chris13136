@@ -1,15 +1,39 @@
+
+/**
+ * @filename Bishop.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Bishop chess piece implementation.
+ */
+
 package model.pieces;
 
 public class Bishop extends ChessPiece {
 
+	/**
+	 * Creates a new bishop piece.
+	 * 
+	 * @param row   Row to place bishop at
+	 * @param col   Column to place bishop at
+	 * @param color Team color of the bishop
+	 */
 	public Bishop(int row, int col, int color) {
 		super(row, col, color);
 		name = "Biship";
 	}
 
 	@Override
+	/**
+	 * Checks if the move is valid for the bishop piece
+	 * 
+	 * @param row    Row to attempt to move to
+	 * @param col    Column to attempt to move to
+	 * @param pieces ChessPiece[][] array containing the board's pieces
+	 * @return Returns true if the bishop can make the move
+	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
-		if(pieces[col][row] != null && pieces[col][row].getColor() == this.color) {
+		if (pieces[col][row] != null
+				&& pieces[col][row].getColor() == this.color) {
 			return false;
 		}
 		// cant move like this
