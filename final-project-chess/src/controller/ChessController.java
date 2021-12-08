@@ -1,3 +1,11 @@
+
+/**
+ * @filename ChessController.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Controls the game state by asking things of the ChessModel.
+ */
+
 package controller;
 
 import java.util.ArrayList;
@@ -16,6 +24,11 @@ public class ChessController {
 	private ChessModel model;
 	private ChessPiece[][] board;
 
+	/**
+	 * Create controller with given model.
+	 * 
+	 * @param model ChessModel to link controller to.
+	 */
 	public ChessController(ChessModel model) {
 		// TODO: I have created this constructor just to begin working on the
 		// view. Feel free to modify as needed.
@@ -23,38 +36,59 @@ public class ChessController {
 		board = model.getBoard();
 	}
 
+	/**
+	 * Returns the board of pieces.
+	 * 
+	 * @return The board of pieces
+	 */
 	public ChessPiece[][] getBoard() {
 		return board;
 	}
-  
-  public boolean makeMove(int curCol, int curRow, int newCol, int newRow) {
-    	if(board[curCol][curRow] != null) {
-    		ChessPiece cur = board[curCol][curRow];
-    		System.out.println(model.getBoard()[curCol][curRow]);
-    		if(cur instanceof King) {
-    			// no moving into check rule
-    			if(!canBeAttacked(newCol, newRow)) {
-    				return false;
-    			}
-    		}
-    		if(cur.isValidMove(newRow, newCol, board)) {
-    			cur.setPosition(newRow, newCol);
-    			return true;
-    		}
-    		
-    	}
-    	return false;
-  }
+
+	/**
+	 * Attempts to make a move on the board.
+	 * 
+	 * @param curCol Column of piece to move
+	 * @param curRow Row of piece to move
+	 * @param newCol Column of place to move to
+	 * @param newRow Row of place to move to
+	 * @return Returns true if the move was possible and executed
+	 */
+	public boolean makeMove(int curCol, int curRow, int newCol, int newRow) {
+		if (board[curCol][curRow] != null) {
+			ChessPiece cur = board[curCol][curRow];
+			System.out.println(model.getBoard()[curCol][curRow]);
+			if (cur instanceof King) {
+				// no moving into check rule
+				if (!canBeAttacked(newCol, newRow)) {
+					return false;
+				}
+			}
+			if (cur.isValidMove(newRow, newCol, board)) {
+				cur.setPosition(newRow, newCol);
+				return true;
+			}
+
+		}
+		return false;
+	}
 
 	/**
 	 * This method returns which player gets to play in the current turn.
+	 * 
 	 * @return 0 for white, 1 for black.
 	 */
-	public int getTurn(){
-    	return model.getTurn();
+	public int getTurn() {
+		return model.getTurn();
 	}
 
-
+	/**
+	 * Returns if the piece can be attacked.
+	 * 
+	 * @param newCol Column of piece to check
+	 * @param newRow Row of piece to check
+	 * @return Returns true if the piece can be attacked
+	 */
 	private boolean canBeAttacked(int newCol, int newRow) {
 		// for each piece in opp list isVaildMove on newCol,newRow
 		ArrayList<ChessPiece> oppList = model.getBlack();
@@ -77,7 +111,7 @@ public class ChessController {
 	 * (aka canBeAttacked or isValid move for each piece in opposite colors
 	 * list on each of the in between squares)
 	 * 
-	 * @return isGameOver?
+	 * @return Returns true if the game is over
 	 */
 	public boolean isGameOver() {
 		// 1. move king (aka check the 8 squares for is vaild move)
@@ -303,5 +337,8 @@ public class ChessController {
 			// can move out
 			return false;
 		}
+	}
+	public void setColor() {
+		model.setTurn();
 	}
 }
