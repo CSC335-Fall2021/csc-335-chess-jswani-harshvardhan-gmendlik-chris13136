@@ -6,6 +6,7 @@ public abstract class ChessPiece {
 	protected int col;
 	protected final int color; // TODO: Color needs to be to determine valid
 								// move. especially for pawns.
+	public String name;
 
 	public ChessPiece(int row, int col, int color) {
 		this.setPosition(row, col);
@@ -59,7 +60,7 @@ public abstract class ChessPiece {
 	public String toString() {
 		String out = "Row: " + Integer.toString(this.row) + ", Col: "
 				+ Integer.toString(this.col) + ", Color: "
-				+ Integer.toString(this.color) + ".";
+				+ Integer.toString(this.color) + ", Name " + this.name + "." ;
 		return out;
 	}
 }
