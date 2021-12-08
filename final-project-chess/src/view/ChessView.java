@@ -76,8 +76,8 @@ public class ChessView extends Application implements Observer {
 					selectedPiece = true;
 					rowClicked1 = boardRow;
 					colClicked1 = boardCol;
-					System.out.println("Selected piece at " + colClicked1 + ","
-							+ rowClicked1);
+					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
+					System.out.println(model.getBoard()[colClicked1][rowClicked1]);
 					return;
 				} else {
 					System.out.println("Wrong player.");
@@ -90,11 +90,11 @@ public class ChessView extends Application implements Observer {
 
 				if (piece == null) {
 					moveImpl(mouseEvent, boardCol, boardRow);
-				} else if (piece.getColor() == turn) {
-					rowClicked1 = boardRow;
-					colClicked1 = boardCol;
-					System.out.println("Selected piece at " + colClicked1 + ","
-							+ rowClicked1);
+				else if(piece.getColor()==turn){
+					rowClicked1=boardRow;
+					colClicked1=boardCol;
+					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
+					System.out.println(model.getBoard()[colClicked1][rowClicked1]);
 					return;
 				}
 				// This condition means that the player clicked either on an
