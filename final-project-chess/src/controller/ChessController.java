@@ -19,10 +19,27 @@ import model.pieces.Pawn;
 import model.pieces.Queen;
 import model.pieces.Rook;
 
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import javafx.application.Platform;
+
 public class ChessController {
 
 	private ChessModel model;
 	private ChessPiece[][] board;
+	
+	private CircleModel model;
+	private Socket connection;
+	private boolean isServer = false;
+	private boolean isConnected = false;
+	
+	ObjectOutputStream oos;
+	ObjectInputStream ois;
 
 	/**
 	 * Create controller with given model.
@@ -33,7 +50,90 @@ public class ChessController {
 		// TODO: I have created this constructor just to begin working on the
 		// view. Feel free to modify as needed.
 		this.model = model;
-		board = model.getBoard();
+		board = model.getBoard(); 
+	}
+	
+	public void startServer() {
+		try {
+			ServerSocket server = new ServerSocket(4000);
+
+			connection = server.accept();
+			
+			oos = new ObjectOutputStream(connection.getOutputStream());
+			ois = new ObjectInputStream(connection.getInputStream());
+			
+			isServer = true;
+			isConnected = true;
+			model.setTurn();
+		}
+		catch(IOException e) {
+			System.err.println("Something went wrong with the network! " + e.getMessage());
+		}
+	}
+	
+	public void startClient() {
+		try {
+			connection = new Socket("localhost", 4000);
+			
+			isServer = false;
+			isConnected = true;
+			model.setMyTurn(false);
+			oos = new ObjectOutputStream(connection.getOutputStream());
+			ois = new ObjectInputStream(connection.getInputStream());
+
+
+			Thread t = new Thread(() -> {
+				try {
+					CheckMessage otherMsg = (CheckMessage)ois.readObject();
+					
+					Platform.runLater(() -> {
+						model.setTurn();
+						//model.addCircle(otherMsg.getX(), otherMsg.getY(), otherMsg.getColor()); FIX THIS	 
+	
+					});
+
+				}
+				catch(IOException | ClassNotFoundException e) {
+					System.err.println("Something went wrong with serialization: " + e.getMessage());
+				}
+			});
+			t.start();
+
+		}
+		catch(IOException e) {
+			System.err.println("Something went wrong with the network! " + e.getMessage());
+		}
+	}
+	
+	public void makeCheckMove(int x, int y) {
+		//model.addCircle(x, y, (isServer) ? CheckMessage.WHITE : CheckMessage.BLACK); FIX THIS
+		
+		CheckMessage msg = new CheckMessage(x, y, (isServer) ? CheckMessage.WHITE : CheckMessage.BLACK);
+		sendMessage(msg);
+	}
+	
+	private void sendMessage(CheckMessage msg) {
+		if(!isConnected) { return; }
+		
+		Thread t = new Thread(() -> {
+			try {
+				oos.writeObject(msg);
+				oos.flush();
+				
+				CheckMessage otherMsg = (CheckMessage)ois.readObject();
+				
+				Platform.runLater(() -> {
+					model.setTurn();
+					//model.addCircle(otherMsg.getX(), otherMsg.getY(), otherMsg.getColor()); FIX THIS
+				});
+			}
+			catch(IOException | ClassNotFoundException e) {
+				System.err.println("Something went wrong with serialization: " + e.getMessage());
+			}
+			
+		});
+		t.start();
+		
 	}
 
 	/**
