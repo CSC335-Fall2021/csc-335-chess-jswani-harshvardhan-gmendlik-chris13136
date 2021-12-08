@@ -55,8 +55,8 @@ import model.pieces.Pawn;
 import model.pieces.Queen;
 import model.pieces.Rook;
 
-@SuppressWarnings("deprecation")
-public class ChessView extends Application implements Observer {
+
+public class ChessView extends Application{
 
 	ChessModel model;
 	ChessController control;
@@ -95,7 +95,7 @@ public class ChessView extends Application implements Observer {
 				ChessPiece piece = board[boardCol][boardRow];
 				if (piece == null) {
 					mouseEvent.consume();
-					return;
+
 				} else if (piece.getColor() == turn) {
 					selectedPiece = true;
 					rowClicked1 = boardRow;
@@ -104,11 +104,11 @@ public class ChessView extends Application implements Observer {
 							+ rowClicked1);
 					System.out.println(
 							model.getBoard()[colClicked1][rowClicked1]);
-					return;
+
 				} else {
 					System.out.println("Wrong player.");
 					mouseEvent.consume();
-					return;
+
 				}
 			} else {
 				ChessPiece piece = board[boardCol][boardRow];
@@ -123,7 +123,7 @@ public class ChessView extends Application implements Observer {
 							+ rowClicked1);
 					System.out.println(
 							model.getBoard()[colClicked1][rowClicked1]);
-					return;
+
 				}
 				// This condition means that the player clicked either on an
 				// empty or on an enemy piece.
@@ -132,6 +132,7 @@ public class ChessView extends Application implements Observer {
 				}
 			}
 
+			model.printBoard();
 		}
 
 		/**
@@ -160,6 +161,48 @@ public class ChessView extends Application implements Observer {
 				System.out.println("Invalid move");
 				mouseEvent.consume();
 			}
+			HBox oldSquare = (HBox) getNodeByRowColumnIndex(8-rowClicked1, colClicked1+1, pane);
+			HBox newSquare = (HBox) getNodeByRowColumnIndex(8-rowClicked2, colClicked2+1, pane);
+
+			ChessPiece[][] board = control.getBoard();
+
+			if (board[colClicked1][rowClicked1]==null) {
+				oldSquare.getChildren().clear();
+			}
+
+			newSquare.getChildren().clear();
+
+
+
+			ChessPiece piece = board[boardCol][boardRow];
+
+			if (piece != null) {
+				String imgStr = "";
+				if (piece.getColor() == 0) {
+					imgStr += "white";
+				} else
+					imgStr += "black";
+
+				if (piece instanceof Pawn) {
+					imgStr += "Pawn";
+				} else if (piece instanceof King) {
+					imgStr += "King";
+				} else if (piece instanceof Queen) {
+					imgStr += "Queen";
+				} else if (piece instanceof Bishop) {
+					imgStr += "Bishop";
+				} else if (piece instanceof Knight) {
+					imgStr += "Knight";
+				} else if (piece instanceof Rook) {
+					imgStr += "Rook";
+				}
+				ImageView imageView = new ImageView(images.get(imgStr));
+				imageView.setFitHeight(80);
+				imageView.setFitWidth(80);
+				newSquare.getChildren().add(imageView);
+			}
+
+			control.setTurn();
 		}
 	}
 
@@ -472,10 +515,4 @@ public class ChessView extends Application implements Observer {
 		root.setTop(bar);
 	}
 
-	@Override
-	// TODO: add javadoc to method
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
-	}
 }
