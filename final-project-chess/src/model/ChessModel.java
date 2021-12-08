@@ -26,7 +26,7 @@ import model.pieces.Queen;
 import model.pieces.Rook;
 
 @SuppressWarnings("deprecation")
-public class ChessModel extends Observable {
+public class ChessModel {
 
 	public static final int WHITE = 0;
 	public static final int BLACK = 1;
@@ -310,6 +310,7 @@ public class ChessModel extends Observable {
 		}
 		System.out.println("Turn: " + Integer.toString(turn));
 	}
+
 
 	/**
 	 * Loads a game from the given file.

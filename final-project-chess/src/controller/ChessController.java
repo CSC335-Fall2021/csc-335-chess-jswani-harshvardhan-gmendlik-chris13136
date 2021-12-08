@@ -65,6 +65,8 @@ public class ChessController {
 				}
 			}
 			if (cur.isValidMove(newRow, newCol, board)) {
+				board[curCol][curRow]=null;
+				board[newCol][newRow]=cur;
 				cur.setPosition(newRow, newCol);
 				return true;
 			}
@@ -80,6 +82,10 @@ public class ChessController {
 	 */
 	public int getTurn() {
 		return model.getTurn();
+	}
+
+	public void setTurn(){
+		model.setTurn();
 	}
 
 	/**
