@@ -35,7 +35,7 @@ public class Pawn extends ChessPiece {
 	 * @return Returns true if the pawn can make the move
 	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
-		System.out.println("pawn moving to " + pieces[col][row]);
+		System.out.println("pawn moving to (" + col+","+row+")");
 		if (pieces[col][row] != null
 				&& pieces[col][row].getColor() == this.color) {
 			return false;
