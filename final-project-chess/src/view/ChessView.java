@@ -1,6 +1,16 @@
+
+/**
+ * @filename ChessView.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Initializes the application GUI.
+ */
+
 package view;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +40,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import model.ChessModel;
 import model.pieces.Bishop;
@@ -53,9 +66,17 @@ public class ChessView extends Application implements Observer {
 	boolean selectedPiece;
 	HashMap<String, Image> images;
 
+	/**
+	 * Implements a square with an EventHandler to capture mouse clicks.
+	 */
 	public class SquareClicked implements EventHandler<MouseEvent> {
 
 		@Override
+		/**
+		 * Handles a click on a square.
+		 * 
+		 * @param mouseEvent Mouse event captured
+		 */
 		public void handle(MouseEvent mouseEvent) {
 			ChessPiece[][] board = control.getBoard();
 			int turn = control.getTurn();
@@ -76,8 +97,10 @@ public class ChessView extends Application implements Observer {
 					selectedPiece = true;
 					rowClicked1 = boardRow;
 					colClicked1 = boardCol;
-					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
-					System.out.println(model.getBoard()[colClicked1][rowClicked1]);
+					System.out.println("Selected piece at " + colClicked1 + ","
+							+ rowClicked1);
+					System.out.println(
+							model.getBoard()[colClicked1][rowClicked1]);
 					return;
 				} else {
 					System.out.println("Wrong player.");
@@ -90,11 +113,13 @@ public class ChessView extends Application implements Observer {
 
 				if (piece == null) {
 					moveImpl(mouseEvent, boardCol, boardRow);
-				else if(piece.getColor()==turn){
-					rowClicked1=boardRow;
-					colClicked1=boardCol;
-					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
-					System.out.println(model.getBoard()[colClicked1][rowClicked1]);
+				} else if (piece.getColor() == turn) {
+					rowClicked1 = boardRow;
+					colClicked1 = boardCol;
+					System.out.println("Selected piece at " + colClicked1 + ","
+							+ rowClicked1);
+					System.out.println(
+							model.getBoard()[colClicked1][rowClicked1]);
 					return;
 				}
 				// This condition means that the player clicked either on an
@@ -106,6 +131,13 @@ public class ChessView extends Application implements Observer {
 
 		}
 
+		/**
+		 * Attempts to make the move from the mouse event.
+		 * 
+		 * @param mouseEvent Mouse event captured
+		 * @param boardCol   Column of the board clicked
+		 * @param boardRow   Row of the board clicked
+		 */
 		private void moveImpl(MouseEvent mouseEvent, int boardCol,
 				int boardRow) {
 			rowClicked2 = boardRow;
@@ -160,14 +192,12 @@ public class ChessView extends Application implements Observer {
 		pane.setPrefSize(960, 960);
 		root.setBottom(pane);
 		addMenu();
-		setScene("game");
 		stage.show();
 	}
 
 	/**
 	 * Fetches images from Wikimedia Commons and stores them in a hashmap for
 	 * later use.
-	 *
 	 */
 	public void getImages() {
 		images.put("blackBishop", new Image(
@@ -201,7 +231,7 @@ public class ChessView extends Application implements Observer {
 	 * 
 	 * @param page
 	 */
-	public void setScene(String page) throws FileNotFoundException {
+	public void setScene(String page) {
 		Scene scene = stage.getScene();
 		BorderPane root = (BorderPane) scene.getRoot();
 		GridPane pane = (GridPane) root.getBottom();
@@ -264,7 +294,7 @@ public class ChessView extends Application implements Observer {
 	 * @param pane GridPane containing the chess board
 	 * @throws FileNotFoundException
 	 */
-	public void addPieces(GridPane pane) throws FileNotFoundException {
+	public void addPieces(GridPane pane) {
 
 		ChessPiece[][] pieces = control.getBoard();
 		for (int row = 0; row <= 7; row++) {
@@ -301,6 +331,14 @@ public class ChessView extends Application implements Observer {
 		}
 	}
 
+	/**
+	 * Returns a node at row, col index
+	 * 
+	 * @param row      Row of node
+	 * @param column   Column of node
+	 * @param gridPane GridPane of the nodes
+	 * @return
+	 */
 	public Node getNodeByRowColumnIndex(final int row, final int column,
 			GridPane gridPane) {
 		Node result = null;
@@ -358,11 +396,56 @@ public class ChessView extends Application implements Observer {
 	 */
 	public void addMenu() {
 		Scene scene = stage.getScene();
-		MenuItem newGame = new MenuItem("New Game");
-		MenuItem saveGame = new MenuItem("Save Game");
-		MenuItem loadGame = new MenuItem("Load Game");
-		MenuButton menu = new MenuButton("Options", null, newGame, saveGame,
-				loadGame);
+
+		// New game menu item
+		MenuItem newGame = new MenuItem("_New Game");
+		newGame.setOnAction(event -> {
+			this.model = new ChessModel();
+			this.control = new ChessController(this.model);
+			this.setScene("game");
+		});
+
+		SeparatorMenuItem seperator = new SeparatorMenuItem();
+
+		// Save game menu item
+		MenuItem saveGame = new MenuItem("_Save Game...");
+		saveGame.setOnAction(event -> {
+			FileChooser saveGameFC = new FileChooser();
+			saveGameFC.setInitialDirectory(new File("saves/"));
+			saveGameFC.setTitle("Save File");
+			saveGameFC.getExtensionFilters()
+					.addAll(new ExtensionFilter("All files", "*.*"));
+			File saveTo = saveGameFC.showSaveDialog(stage);
+			try {
+				this.model.writeGame(saveTo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			saveGameFC = null; // trash
+		});
+
+		// load game menu item
+		MenuItem loadGame = new MenuItem("_Load Game...");
+		loadGame.setOnAction(event -> {
+			FileChooser loadGameFC = new FileChooser();
+			loadGameFC.setInitialDirectory(new File("saves/"));
+			loadGameFC.setTitle("Save File");
+			loadGameFC.getExtensionFilters()
+					.addAll(new ExtensionFilter("All files", "*.*"));
+			File toLoad = loadGameFC.showOpenDialog(stage);
+			try {
+				this.model = new ChessModel(toLoad);
+				this.control = new ChessController(this.model);
+				this.setScene("game");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			loadGameFC = null; // trash
+		});
+
+		// options menu
+		MenuButton menu = new MenuButton("Options", null, newGame, seperator,
+				saveGame, loadGame);
 		HBox bar = new HBox(menu);
 		bar.setFillHeight(true);
 		bar.setPrefSize(800, 20);
@@ -373,6 +456,7 @@ public class ChessView extends Application implements Observer {
 	}
 
 	@Override
+	// TODO: add javadoc to method
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 

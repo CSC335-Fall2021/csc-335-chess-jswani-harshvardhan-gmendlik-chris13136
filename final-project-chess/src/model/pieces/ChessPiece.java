@@ -1,3 +1,11 @@
+
+/**
+ * @filename ChessPiece.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Chess piece superclass.
+ */
+
 package model.pieces;
 
 public abstract class ChessPiece {
@@ -8,6 +16,13 @@ public abstract class ChessPiece {
 								// move. especially for pawns.
 	public String name;
 
+	/**
+	 * Creates a new chess piece.
+	 * 
+	 * @param row   Row to create chess piece at
+	 * @param col   Column to create chess piece at
+	 * @param color Team color of the chess piece
+	 */
 	public ChessPiece(int row, int col, int color) {
 		this.setPosition(row, col);
 		this.color = color;
@@ -28,6 +43,7 @@ public abstract class ChessPiece {
 	public int getCol() {
 		return this.col;
 	}
+
 	/**
 	 * 
 	 * @return the row of the piece
@@ -35,6 +51,7 @@ public abstract class ChessPiece {
 	public int getRow() {
 		return this.row;
 	}
+
 	/**
 	 * Returns true if the move is valid.
 	 * 
@@ -57,10 +74,13 @@ public abstract class ChessPiece {
 		this.col = col;
 	}
 
+	/**
+	 * @return Returns a string representation of the chess piece
+	 */
 	public String toString() {
 		String out = "Row: " + Integer.toString(this.row) + ", Col: "
 				+ Integer.toString(this.col) + ", Color: "
-				+ Integer.toString(this.color) + ", Name " + this.name + "." ;
+				+ Integer.toString(this.color) + ", Name " + this.name + ".";
 		return out;
 	}
 }

@@ -1,3 +1,11 @@
+
+/**
+ * @filename PiecesTest.java
+ * @author Garrison Mendlik 12/8/2021
+ * TODO: Add your names
+ * @purpose Tests the ChessPiece superclass and subclasses.
+ */
+
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -195,6 +203,7 @@ class PiecesTest {
 		this.pieces[2][2] = null;
 		assertFalse(white1.isValidMove(2, 0, pieces));
 		assertFalse(white1.isValidMove(2, 2, pieces));
+    
 		// up two when not at start
 		System.out.println("W up two when not at start");
 		Pawn white2 = new Pawn(	2, 1, 0);
@@ -291,5 +300,4 @@ class PiecesTest {
 	assertTrue(white1.isValidMove(2, 3, pieces));
 	
 	}
-	
 }
