@@ -304,4 +304,7 @@ public class ChessController {
 			return false;
 		}
 	}
+	public void setColor() {
+		model.setTurn();
+	}
 }
