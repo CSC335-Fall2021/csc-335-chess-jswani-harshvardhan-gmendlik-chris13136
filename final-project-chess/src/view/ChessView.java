@@ -200,9 +200,10 @@ public class ChessView extends Application{
 				imageView.setFitHeight(80);
 				imageView.setFitWidth(80);
 				newSquare.getChildren().add(imageView);
+				control.setTurn();
 			}
 
-			control.setTurn();
+
 		}
 	}
 
