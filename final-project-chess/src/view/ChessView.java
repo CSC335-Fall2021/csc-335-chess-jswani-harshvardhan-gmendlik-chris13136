@@ -11,6 +11,9 @@ package view;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -179,8 +182,6 @@ public class ChessView extends Application implements Observer {
 		colClicked2 = 100;
 		selectedPiece = false;
 
-		model = new ChessModel();
-		control = new ChessController(model);
 		this.stage = stage;
 		stage.setHeight(980);
 		stage.setWidth(960);
@@ -407,16 +408,29 @@ public class ChessView extends Application implements Observer {
 
 		SeparatorMenuItem seperator = new SeparatorMenuItem();
 
+		Path currentDirectory = Paths
+				.get(Paths.get("").toAbsolutePath().toString() + "\\saves");
+		try {
+			Files.createDirectory(currentDirectory); // Create saves folder
+		} catch (IOException e) {
+			// We don't care that the saves folder exists already, good!
+		}
+
 		// Save game menu item
-		MenuItem saveGame = new MenuItem("_Save Game...");
+		MenuItem saveGame = new MenuItem("_Save Game As...");
 		saveGame.setOnAction(event -> {
+			if (this.model == null)
+				return;
+
 			FileChooser saveGameFC = new FileChooser();
-			saveGameFC.setInitialDirectory(new File("saves/"));
+			saveGameFC.setInitialDirectory(currentDirectory.toFile());
 			saveGameFC.setTitle("Save File");
 			saveGameFC.getExtensionFilters()
 					.addAll(new ExtensionFilter("All files", "*.*"));
 			File saveTo = saveGameFC.showSaveDialog(stage);
 			try {
+				if (saveTo == null)
+					return;
 				this.model.writeGame(saveTo);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -428,12 +442,15 @@ public class ChessView extends Application implements Observer {
 		MenuItem loadGame = new MenuItem("_Load Game...");
 		loadGame.setOnAction(event -> {
 			FileChooser loadGameFC = new FileChooser();
-			loadGameFC.setInitialDirectory(new File("saves/"));
+			loadGameFC.setInitialDirectory(currentDirectory.toFile());
 			loadGameFC.setTitle("Save File");
 			loadGameFC.getExtensionFilters()
 					.addAll(new ExtensionFilter("All files", "*.*"));
 			File toLoad = loadGameFC.showOpenDialog(stage);
 			try {
+				if (this.model == null)
+					return;
+
 				this.model = new ChessModel(toLoad);
 				this.control = new ChessController(this.model);
 				this.setScene("game");
