@@ -39,6 +39,7 @@ public class ChessController {
     		}
     		if(cur.isValidMove(newRow, newCol, board)) {
     			cur.setPosition(newRow, newCol);
+    			model.getBoard()[newCol][newRow] = cur;
     			return true;
     		}
     		
