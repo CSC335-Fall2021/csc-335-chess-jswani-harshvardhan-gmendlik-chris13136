@@ -32,10 +32,12 @@ public class Bishop extends ChessPiece {
 	 * @return Returns true if the bishop can make the move
 	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
-		if (pieces[col][row] != null
-				&& pieces[col][row].getColor() == this.color) {
-			return false;
+		if(pieces[col][row] != null) {
+			if( pieces[col][row].getColor() == this.color) {
+				return false;
+			}
 		}
+
 		// cant move like this
 		if (this.row == row || this.col == col) {
 			return false;
@@ -51,20 +53,18 @@ public class Bishop extends ChessPiece {
 		if (Integer.signum(this.col - col) == 1) {
 			colOff = -1;
 		}
-		int curCol = this.col;
-		int curRow = this.row;
+		int curCol = this.col+colOff;
+		int curRow = this.row+rowOff;
 
 		while (curCol != col) {
-			if (pieces[curCol][curRow] != null) {
-				System.out.println("This: " + this.toString());
-				System.out.println(
-						"Other: " + pieces[curCol][curRow].toString());
-				if (pieces[curCol][curRow].color != this.color) // Enemy piece
-					return true;
+			if (pieces[curCol][curRow] != null) {	
 				return false;
 			}
 			curCol += colOff;
 			curRow += rowOff;
+		}
+		if (pieces[col][row] != null && pieces[curCol][curRow].color != this.color) {
+			return true;// Enemy piece
 		}
 		return true;
 	}

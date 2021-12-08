@@ -40,33 +40,33 @@ public class Rook extends ChessPiece {
 		if (this.row != row && this.col != col) {
 			return false;
 		}
-		// left right check
-		if (this.row == row) {
-			// right check
-			for (int i = this.col; i < col; i++) {
+		//left right check
+		if(this.row == row) {
+			//right check
+			for (int i = this.col + 1; i < col; i++) {
 				if (pieces[i][row] != null) {
 					return false;
 				}
 			}
-			// left check
-			for (int i = this.col; i > col; i--) {
+			//left check
+			for (int i = this.col - 1; i > col; i--) {
 				if (pieces[i][row] != null) {
 					return false;
 				}
 			}
 			return true;
 		}
-
-		// up down check
-		if (this.col == col) {
-			// up check
-			for (int i = this.row; i < row; i++) {
+		
+		//up down check
+		if(this.col == col) {
+			//up check
+			for (int i = this.row + 1; i < row; i++) {
 				if (pieces[col][i] != null) {
 					return false;
 				}
 			}
-			// down check
-			for (int i = this.row; i > row; i--) {
+			//down check
+			for (int i = this.row - 1; i > row; i--) {
 				if (pieces[col][i] != null) {
 					return false;
 				}

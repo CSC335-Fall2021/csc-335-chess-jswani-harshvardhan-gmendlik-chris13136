@@ -32,7 +32,6 @@ public class Queen extends ChessPiece {
 	 * @return Returns true if the queen can make the move
 	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
-		// TODO Auto-generated method stub
 
 		if (pieces[col][row] != null
 				&& pieces[col][row].getColor() == this.color) {
@@ -41,13 +40,13 @@ public class Queen extends ChessPiece {
 
 		if (this.row == row) {
 			// right check
-			for (int i = this.col; i < col; i++) {
+			for (int i = this.col + 1; i < col; i++) {
 				if (pieces[i][row] != null) {
 					return false;
 				}
 			}
 			// left check
-			for (int i = this.col; i > col; i--) {
+			for (int i = this.col - 1; i > col; i--) {
 				if (pieces[i][row] != null) {
 					return false;
 				}
@@ -58,13 +57,13 @@ public class Queen extends ChessPiece {
 		// up down check
 		if (this.col == col) {
 			// up check
-			for (int i = this.row; i < row; i++) {
+			for (int i = this.row + 1; i < row; i++) {
 				if (pieces[col][i] != null) {
 					return false;
 				}
 			}
 			// down check
-			for (int i = this.row; i > row; i--) {
+			for (int i = this.row - 1; i > row; i--) {
 				if (pieces[col][i] != null) {
 					return false;
 				}
@@ -72,9 +71,8 @@ public class Queen extends ChessPiece {
 			return true;
 		}
 
-		checkDiagnols(row, col, pieces);
+		return checkDiagnols(row, col, pieces);
 
-		return false;
 	}
 
 	public boolean checkDiagnols(int row, int col, ChessPiece[][] pieces) {
@@ -92,8 +90,8 @@ public class Queen extends ChessPiece {
 		if (Integer.signum(this.col - col) == 1) {
 			colOff = -1;
 		}
-		int curCol = this.col;
-		int curRow = this.row;
+		int curCol = this.col + colOff;
+		int curRow = this.row + rowOff;
 
 		while (curCol != col) {
 			if (pieces[curCol][curRow] != null) {

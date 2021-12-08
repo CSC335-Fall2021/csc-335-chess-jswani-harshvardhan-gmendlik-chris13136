@@ -45,15 +45,16 @@ public class Pawn extends ChessPiece {
 		if (this.color == 1) {
 			offset = -1;
 		}
-		System.out.println("before row+off");
 		if (this.row + offset == row) {
-			System.out.println("inside row+off");
-			// if the square is empty then we all good
-			if (pieces[col][row] == null) {
-				System.out.println("returned true");
+			//if the square is empty then we all good
+			if(pieces[col][row] == null && this.col == col) {
 				return true;
 			}
-			// else it has a piece so false
+			else if( pieces[col][row] != null && pieces[col][row].color != this.color) {
+				//diagonal take check
+				return true;
+			}
+			//else it has a friendly piece so false
 			return false;
 		}
 
@@ -75,20 +76,6 @@ public class Pawn extends ChessPiece {
 			return false;
 		}
 
-		// diagonal +1 check
-		if (col + 1 < 8 && this.row + offset == row && this.col + 1 == col
-				&& !(pieces[col][row] == null)) {
-
-			return true;
-
-		}
-		// diagonal -1 check
-		if (col - 1 > 0 && this.row + offset == row && this.col - 1 == col
-				&& !(pieces[col][row] == null)) {
-
-			return true;
-
-		}
 		// all 4 things a pawn can do failed so everything else is false
 		return false;
 	}
