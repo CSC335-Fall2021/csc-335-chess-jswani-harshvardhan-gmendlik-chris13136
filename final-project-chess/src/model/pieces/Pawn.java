@@ -14,7 +14,7 @@ public class Pawn extends ChessPiece {
 		}
 		// up one check
 		int offset = 1;
-		if (this.color == 1) {
+		if (this.color == 0) {
 			offset = -1;
 		}
 		if (this.row + offset == row) {

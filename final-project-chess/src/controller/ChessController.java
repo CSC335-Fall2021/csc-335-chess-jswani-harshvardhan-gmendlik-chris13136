@@ -28,16 +28,16 @@ public class ChessController {
 	}
   
   public boolean makeMove(int curCol, int curRow, int newCol, int newRow) {
-    	if(board[curRow][curCol] != null) {
-    		ChessPiece cur = board[newRow][newCol];
+    	if(board[curCol][curRow] != null) {
+    		ChessPiece cur = board[curCol][curRow];
     		if(cur instanceof King) {
     			// no moving into check rule
-    			if(!canBeAttacked(newRow, newCol)) {
+    			if(!canBeAttacked(newCol, newRow)) {
     				return false;
     			}
     		}
-    		if(cur.isValidMove(newRow, newCol, board)) {
-    			cur.setPosition(newRow, newCol);
+    		if(cur.isValidMove(newCol, newRow, board)) {
+    			cur.setPosition(newCol, newRow);
     		}
     		
     	}
