@@ -78,7 +78,7 @@ public class ChessView extends Application implements Observer {
 				if (piece==null){
 					moveImpl(mouseEvent, boardCol, boardRow);
 				}
-				if(piece.getColor()==turn){
+				else if(piece.getColor()==turn){
 					rowClicked1=boardRow;
 					colClicked1=boardCol;
 					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
