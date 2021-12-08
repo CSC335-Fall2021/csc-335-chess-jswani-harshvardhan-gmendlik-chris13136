@@ -83,6 +83,7 @@ public class ChessView extends Application implements Observer {
 					rowClicked1=boardRow;
 					colClicked1=boardCol;
 					System.out.println("Selected piece at "+colClicked1+","+rowClicked1);
+					System.out.println(model.getBoard()[colClicked1][rowClicked1]);
 					return;
 				}
 				//This condition means that the player clicked either on an empty or on an enemy piece.

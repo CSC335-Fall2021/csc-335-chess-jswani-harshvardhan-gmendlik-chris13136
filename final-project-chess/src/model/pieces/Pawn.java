@@ -10,18 +10,21 @@ public class Pawn extends ChessPiece {
 
 	@Override
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+		System.out.println("pawn moving to " + pieces[col][row]);
 		if(pieces[col][row] != null && pieces[col][row].getColor() == this.color) {
 			return false;
 		}
 		// up one check
 		int offset = 1;
-		if (this.color == 0) {
+		if (this.color == 1) {
 			offset = -1;
 		}
+		System.out.println("before row+off");
 		if (this.row + offset == row) {
+			System.out.println("inside row+off");
 			//if the square is empty then we all good
 			if(pieces[col][row] == null) {
-				
+				System.out.println("returned true");
 				return true;
 			}
 			//else it has a piece so false
