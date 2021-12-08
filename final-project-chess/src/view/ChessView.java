@@ -277,6 +277,7 @@ public class ChessView extends Application {
 		Scene scene = stage.getScene();
 		BorderPane root = (BorderPane) scene.getRoot();
 		GridPane pane = (GridPane) root.getBottom();
+		pane.getChildren().clear();
 		if (page.equals("game")) {
 
 			int rowCount = 10;
