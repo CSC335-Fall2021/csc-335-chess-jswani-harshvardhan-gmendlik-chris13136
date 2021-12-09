@@ -192,8 +192,7 @@ public class ChessModel {
 	 * Prints the model's current chess board to the console. White pieces
 	 * printed in upper case, black pieces printed in lower case.
 	 */
-	public String printBoard() {
-		String out = "";
+	public void printBoard() {
 		System.out.println("  a b c d e f g ");
 		for (int i = 0; i < 8; i++) {
 			System.out.print(Integer.toString(i) + " ");
@@ -202,62 +201,46 @@ public class ChessModel {
 				if (currPiece instanceof Knight) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("H "); // h for horse cause k is taken
-						out += 'H';
 					} else {
 						System.out.print("h ");
-						out += 'h';
 					}
 				} else if (currPiece instanceof Pawn) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("P ");
-						out += 'P';
 					} else {
 						System.out.print("p ");
-						out += 'p';
 					}
 				} else if (currPiece instanceof Queen) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("Q ");
-						out += 'Q';
 					} else {
 						System.out.print("q ");
-						out += 'q';
 					}
 				} else if (currPiece instanceof King) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("K ");
-						out += 'K';
 					} else {
 						System.out.print("k ");
-						out += 'k';
 					}
 				} else if (currPiece instanceof Rook) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("R ");
-						out += 'R';
 					} else {
 						System.out.print("r ");
-						out += 'r';
 					}
 				} else if (currPiece instanceof Bishop) {
 					if (currPiece.getColor() == 0) {
 						System.out.print("B ");
-						out += 'B';
 					} else {
 						System.out.print("b ");
-						out += 'b';
 					}
 				} else {
 					System.out.print(". ");
-					out += '.';
 				}
 			}
 			System.out.println();
-			out += '\n';
 		}
 		System.out.println("Turn: " + Integer.toString(this.turn));
-		out += Integer.toString(this.turn);
-		return out;
 	}
 
 	/**
