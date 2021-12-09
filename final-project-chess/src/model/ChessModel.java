@@ -194,7 +194,7 @@ public class ChessModel {
 	 */
 	public void printBoard() {
 		System.out.println("  a b c d e f g ");
-		for (int i = 0; i < 8; i++) {
+		for (int i = 7; i >= 0; i--) {
 			System.out.print(Integer.toString(i) + " ");
 			for (int j = 0; j < 8; j++) {
 				ChessPiece currPiece = this.pieces[j][i];
@@ -251,7 +251,7 @@ public class ChessModel {
 	 */
 	public static void printBoard(ChessPiece[][] pieces, final int turn) {
 		System.out.println("  a b c d e f g h ");
-		for (int i = 0; i < 8; i++) {
+		for (int i = 7; i >= 0; i--) {
 			System.out.print(Integer.toString(i) + " ");
 			for (int j = 0; j < 8; j++) {
 				ChessPiece currPiece = pieces[j][i];
