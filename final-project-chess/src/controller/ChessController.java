@@ -52,7 +52,7 @@ public class ChessController {
 		board = model.getBoard(); 
 	}
 	
-	public void startServer() {
+	/*public void startServer() {
 		try {
 			ServerSocket server = new ServerSocket(4000);
 
@@ -133,7 +133,7 @@ public class ChessController {
 		});
 		t.start();
 		
-	}
+	}*/
 
 	/**
 	 * Returns the board of pieces.
