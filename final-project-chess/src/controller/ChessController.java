@@ -33,7 +33,6 @@ public class ChessController {
 	private ChessModel model;
 	private ChessPiece[][] board;
 	
-	private CircleModel model;
 	private Socket connection;
 	private boolean isServer = false;
 	private boolean isConnected = false;
