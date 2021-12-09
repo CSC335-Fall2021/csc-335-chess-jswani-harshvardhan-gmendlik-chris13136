@@ -34,6 +34,11 @@ public class King extends ChessPiece {
 	 * @return Returns true if the king can make the move
 	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
+		if (row > 7 || row < 0)
+			return false;
+		if (col > 7 || col < 0)
+			return false;
+
 		if (pieces[col][row] != null
 				&& pieces[col][row].getColor() == this.color) {
 			return false;

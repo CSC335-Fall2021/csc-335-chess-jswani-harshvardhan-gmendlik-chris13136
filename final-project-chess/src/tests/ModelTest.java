@@ -15,10 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import model.ChessModel;
@@ -27,18 +25,9 @@ import model.pieces.Rook;
 class ModelTest {
 	private ChessModel model;
 
-	@BeforeEach
-	void setUp() {
-
-	}
-
 	@Test
-	void loadGameTest() {
-		try {
-			this.model = new ChessModel(new File("saves/InitialBoard.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	void modelTest() {
+		this.model = new ChessModel();
 		assertEquals(ChessModel.WHITE, this.model.getBoard()[0][0].getColor());
 		assertTrue(this.model.getBoard()[0][0] instanceof Rook);
 		ChessModel.printBoard(this.model.getBoard(), ChessModel.WHITE);
@@ -47,7 +36,14 @@ class ModelTest {
 		} catch (IOException e) {
 			fail();
 		}
-	}
 
-	// TODO: implement more ChessModel tests
+		this.model.getBlack();
+		this.model.getWhite();
+		assertEquals(ChessModel.WHITE, this.model.getTurn());
+		this.model.setTurn();
+		assertEquals(ChessModel.BLACK, this.model.getTurn());
+		this.model.removePiece(0, 0, this.model.getBoard());
+		this.model.printBoard();
+		ChessModel.printBoard(this.model.getBoard(), ChessModel.BLACK);
+	}
 }

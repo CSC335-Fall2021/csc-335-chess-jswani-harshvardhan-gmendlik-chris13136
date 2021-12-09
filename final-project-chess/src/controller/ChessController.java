@@ -131,6 +131,9 @@ public class ChessController {
 	 * @return Returns true if the move was possible and executed
 	 */
 	public boolean makeMove(int curCol, int curRow, int newCol, int newRow) {
+		if (this.board[curCol][curRow].getColor() != this.getTurn())
+			return false;
+
 		if (board[curCol][curRow] != null) {
 			ChessPiece cur = board[curCol][curRow];
 			System.out.println(model.getBoard()[curCol][curRow]);
