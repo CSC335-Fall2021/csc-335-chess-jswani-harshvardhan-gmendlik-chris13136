@@ -46,7 +46,7 @@ public class Queen extends ChessPiece {
 			ArrayList<PosTouple> currList = possibilities.get(currDir);
 			boolean isBlocked = false;
 			for (PosTouple pos : currList) {
-				if (row == pos.row && col == pos.col) {
+				if (row == pos.row && col == pos.col) { // Found square
 					if (pieces[pos.col][pos.row] == null && !isBlocked)
 						return true;
 					if (pieces[pos.col][pos.row] == null && isBlocked)
@@ -59,7 +59,7 @@ public class Queen extends ChessPiece {
 					if (pieces[pos.col][pos.row].color == this.color)
 						return false;
 				}
-				if (pieces[pos.col][pos.row] != null)
+				if (pieces[pos.col][pos.row] != null) // Piece blocks move
 					isBlocked = true;
 			}
 			isBlocked = false;
@@ -84,9 +84,9 @@ public class Queen extends ChessPiece {
 	 * Finds all the possible squares that the queen could move to IF the queen
 	 * was the only piece on the board.
 	 * 
-	 * ArrayList 0: up ArrayList 1: down ArrayList 2: right ArrayList 3: left
-	 * ArrayList 4: up and right ArrayList 5: down and right ArrayList 6: down
-	 * and left ArrayList 7: up and left
+	 * ArrayList 0: up, ArrayList 1: down, ArrayList 2: right, ArrayList 3:
+	 * left, ArrayList 4: up and right, ArrayList 5: down and right, ArrayList
+	 * 6: down and left, ArrayList 7: up and left
 	 * 
 	 * @return Returns ArrayList of ArrayLists that hold Touples of the
 	 *         positions that the queen could move to.
@@ -166,6 +166,7 @@ public class Queen extends ChessPiece {
 			currStep++;
 		}
 		possibilities.add(currDirectionList);
+
 		return possibilities;
 	}
 }
