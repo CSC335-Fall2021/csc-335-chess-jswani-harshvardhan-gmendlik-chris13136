@@ -8,6 +8,8 @@
 
 package model.pieces;
 
+import java.util.ArrayList;
+
 public class Queen extends ChessPiece {
 
 	/**
@@ -38,69 +40,131 @@ public class Queen extends ChessPiece {
 			return false;
 		}
 
-		if (this.row == row) {
-			// right check
-			for (int i = this.col + 1; i < col; i++) {
-				if (pieces[i][row] != null) {
-					return false;
+		ArrayList<ArrayList<PosTouple>> possibilities = this.findRange();
+		for (int currDir = 0; currDir < possibilities.size(); currDir++) {
+			ArrayList<PosTouple> currList = possibilities.get(currDir);
+			boolean isBlocked = false;
+			for (PosTouple pos : currList) {
+				if (row == pos.row && col == pos.col) {
+					if (pieces[pos.col][pos.row] == null && !isBlocked)
+						return true;
+					if (pieces[pos.col][pos.row] == null && isBlocked)
+						return false;
+					if (pieces[pos.col][pos.row].color != this.color) {
+						if (!isBlocked)
+							return true;
+						return false;
+					}
+					if (pieces[pos.col][pos.row].color == this.color)
+						return false;
 				}
+				if (pieces[pos.col][pos.row] != null)
+					isBlocked = true;
 			}
-			// left check
-			for (int i = this.col - 1; i > col; i--) {
-				if (pieces[i][row] != null) {
-					return false;
-				}
-			}
-			return true;
+			isBlocked = false;
 		}
-
-		// up down check
-		if (this.col == col) {
-			// up check
-			for (int i = this.row + 1; i < row; i++) {
-				if (pieces[col][i] != null) {
-					return false;
-				}
-			}
-			// down check
-			for (int i = this.row - 1; i > row; i--) {
-				if (pieces[col][i] != null) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		return checkDiagnols(row, col, pieces);
-
+		return false;
 	}
 
-	public boolean checkDiagnols(int row, int col, ChessPiece[][] pieces) {
-		if (this.row == row || this.col == col) {
-			return false;
-		}
-		// default to +,+
-		int colOff = 1;
-		int rowOff = 1;
+	/**
+	 * Holds row,col position for the board's squares.
+	 */
+	private class PosTouple {
+		public int row;
+		public int col;
 
-		if (Integer.signum(this.row - row) == 1) {
-			rowOff = -1;
+		public PosTouple(int row, int col) {
+			this.row = row;
+			this.col = col;
 		}
-
-		if (Integer.signum(this.col - col) == 1) {
-			colOff = -1;
-		}
-		int curCol = this.col + colOff;
-		int curRow = this.row + rowOff;
-
-		while (curCol != col) {
-			if (pieces[curCol][curRow] != null) {
-				return false;
-			}
-			curCol += colOff;
-			curRow += rowOff;
-		}
-		return true;
 	}
 
+	/**
+	 * Finds all the possible squares that the queen could move to IF the queen
+	 * was the only piece on the board.
+	 * 
+	 * ArrayList 0: up ArrayList 1: down ArrayList 2: right ArrayList 3: left
+	 * ArrayList 4: up and right ArrayList 5: down and right ArrayList 6: down
+	 * and left ArrayList 7: up and left
+	 * 
+	 * @return Returns ArrayList of ArrayLists that hold Touples of the
+	 *         positions that the queen could move to.
+	 */
+	private ArrayList<ArrayList<PosTouple>> findRange() {
+		ArrayList<ArrayList<PosTouple>> possibilities = new ArrayList<ArrayList<PosTouple>>();
+		PosTouple currPos = null;
+
+		// get moves going up
+		ArrayList<PosTouple> currDirectionList = new ArrayList<PosTouple>();
+		for (int currRow = this.row + 1; currRow < 8; currRow++) {
+			currPos = new PosTouple(currRow, this.col);
+			currDirectionList.add(currPos);
+		}
+		possibilities.add(currDirectionList);
+
+		// get moves going down
+		currDirectionList = new ArrayList<PosTouple>();
+		for (int currRow = this.row - 1; currRow >= 0; currRow--) {
+			currPos = new PosTouple(currRow, this.col);
+			currDirectionList.add(currPos);
+		}
+		possibilities.add(currDirectionList);
+
+		// get moves going to right
+		currDirectionList = new ArrayList<PosTouple>();
+		for (int currCol = this.col + 1; currCol < 8; currCol++) {
+			currPos = new PosTouple(this.row, currCol);
+			currDirectionList.add(currPos);
+		}
+		possibilities.add(currDirectionList);
+
+		// get moves going to left
+		currDirectionList = new ArrayList<PosTouple>();
+		for (int currCol = this.col - 1; currCol >= 0; currCol--) {
+			currPos = new PosTouple(this.row, currCol);
+			currDirectionList.add(currPos);
+		}
+		possibilities.add(currDirectionList);
+
+		// get moves going up and to right
+		currDirectionList = new ArrayList<PosTouple>();
+		int currStep = 1;
+		while (this.row + currStep < 8 && this.col + currStep < 8) {
+			currPos = new PosTouple(this.row + currStep, this.col + currStep);
+			currDirectionList.add(currPos);
+			currStep++;
+		}
+		possibilities.add(currDirectionList);
+
+		// get moves going down and to right
+		currDirectionList = new ArrayList<PosTouple>();
+		currStep = 1;
+		while (this.row - currStep >= 0 && this.col + currStep < 8) {
+			currPos = new PosTouple(this.row - currStep, this.col + currStep);
+			currDirectionList.add(currPos);
+			currStep++;
+		}
+		possibilities.add(currDirectionList);
+
+		// get moves going down and to left
+		currDirectionList = new ArrayList<PosTouple>();
+		currStep = 1;
+		while (this.row - currStep >= 0 && this.col - currStep >= 0) {
+			currPos = new PosTouple(this.row - currStep, this.col - currStep);
+			currDirectionList.add(currPos);
+			currStep++;
+		}
+		possibilities.add(currDirectionList);
+
+		// get moves going up and to left
+		currDirectionList = new ArrayList<PosTouple>();
+		currStep = 1;
+		while (this.row + currStep < 8 && this.col - currStep >= 0) {
+			currPos = new PosTouple(this.row + currStep, this.col - currStep);
+			currDirectionList.add(currPos);
+			currStep++;
+		}
+		possibilities.add(currDirectionList);
+		return possibilities;
+	}
 }
