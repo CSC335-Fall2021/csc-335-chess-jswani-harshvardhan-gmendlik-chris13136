@@ -2,6 +2,7 @@
 /**
  * @filename ControllerTest.java
  * @author Garrison Mendlik 12/8/2021
+ * 		   Jasnam Swani
  * TODO: Add your names
  * @purpose Tests the ChessController class.
  */
