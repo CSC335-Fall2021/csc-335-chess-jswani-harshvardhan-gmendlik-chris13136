@@ -2,8 +2,9 @@
 /**
  * @filename Bishop.java
  * @author Garrison Mendlik 12/8/2021
- * 		   Jasnam Swani
- * TODO: Add your names
+ * @author Jasnam Swani
+ * @author Harshvardhan Bhatnagar
+ * @author Chris Brinkley
  * @purpose Bishop chess piece implementation.
  */
 
@@ -33,8 +34,8 @@ public class Bishop extends ChessPiece {
 	 * @return Returns true if the bishop can make the move
 	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
-		if(pieces[col][row] != null) {
-			if( pieces[col][row].getColor() == this.color) {
+		if (pieces[col][row] != null) {
+			if (pieces[col][row].getColor() == this.color) {
 				return false;
 			}
 		}
@@ -54,17 +55,18 @@ public class Bishop extends ChessPiece {
 		if (Integer.signum(this.col - col) == 1) {
 			colOff = -1;
 		}
-		int curCol = this.col+colOff;
-		int curRow = this.row+rowOff;
+		int curCol = this.col + colOff;
+		int curRow = this.row + rowOff;
 
 		while (curCol != col) {
-			if (pieces[curCol][curRow] != null) {	
+			if (pieces[curCol][curRow] != null) {
 				return false;
 			}
 			curCol += colOff;
 			curRow += rowOff;
 		}
-		if (pieces[col][row] != null && pieces[curCol][curRow].color != this.color) {
+		if (pieces[col][row] != null
+				&& pieces[curCol][curRow].color != this.color) {
 			return true;// Enemy piece
 		}
 		return true;

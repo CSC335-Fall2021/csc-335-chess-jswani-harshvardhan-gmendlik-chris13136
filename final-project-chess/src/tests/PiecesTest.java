@@ -2,8 +2,9 @@
 /**
  * @filename PiecesTest.java
  * @author Garrison Mendlik 12/8/2021
- * 		   Jasnam Swani
- * TODO: Add your names
+ * @author Jasnam Swani
+ * @author Harshvardhan Bhatnagar
+ * @author Chris Brinkley
  * @purpose Tests the ChessPiece superclass and subclasses.
  */
 
@@ -13,12 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
-import model.ChessModel;
-import model.pieces.*;
+import model.pieces.Bishop;
+import model.pieces.ChessPiece;
+import model.pieces.King;
+import model.pieces.Knight;
+import model.pieces.Pawn;
+import model.pieces.Queen;
+import model.pieces.Rook;
 
 class PiecesTest {
 	private ChessPiece[][] pieces;
@@ -46,7 +50,7 @@ class PiecesTest {
 		// down - right
 		System.out.println("Bishop down - right");
 		assertTrue(white1.isValidMove(7, 1, pieces));
-		
+
 		// down - left, blocked
 		System.out.println("Bishop down - left, blocked");
 		this.pieces[3][3] = cockBlocker1;
@@ -63,11 +67,12 @@ class PiecesTest {
 		System.out.println("Bishop down - right, blocked");
 		this.pieces[3][5] = cockBlocker1;
 		assertFalse(white1.isValidMove(7, 1, pieces));
-		
-		//trivial test
+
+		// trivial test
 		System.out.println("Bishop up one");
 		assertFalse(white1.isValidMove(4, 5, pieces));
 	}
+
 	@Test
 	void rookTest() {
 		// sets it up in the middle
@@ -86,7 +91,7 @@ class PiecesTest {
 		// down
 		System.out.println("Rook down");
 		assertTrue(white1.isValidMove(7, 4, pieces));
-		
+
 		// left, blocked
 		System.out.println("Rook left, blocked");
 		this.pieces[3][4] = cockBlocker1;
@@ -103,12 +108,12 @@ class PiecesTest {
 		System.out.println("Rook down, blocked");
 		this.pieces[4][5] = cockBlocker1;
 		assertFalse(white1.isValidMove(7, 4, pieces));
-		
-		//trivial test
+
+		// trivial test
 		System.out.println("Rook up one left one");
 		assertFalse(white1.isValidMove(5, 5, pieces));
 	}
-	
+
 	@Test
 	void queenTest() {
 		// sets it up in the middle
@@ -138,9 +143,8 @@ class PiecesTest {
 		assertTrue(white1.isValidMove(1, 7, pieces));
 		// down - right
 		System.out.println("Queen down - right");
-		assertTrue(white1.isValidMove(7, 1, pieces));		
-		
-		
+		assertTrue(white1.isValidMove(7, 1, pieces));
+
 		// left, blocked
 		System.out.println("Queen left, blocked");
 		this.pieces[3][4] = cockBlocker1;
@@ -174,11 +178,12 @@ class PiecesTest {
 		this.pieces[3][5] = cockBlocker1;
 		assertFalse(white1.isValidMove(7, 1, pieces));
 	}
+
 	@Test
 	void pawnTest() {
 		// sets it up in the middle
-		Pawn white1 = new Pawn(	1, 1, 0);
-		Pawn black1 = new Pawn( 6, 1, 1);
+		Pawn white1 = new Pawn(1, 1, 0);
+		Pawn black1 = new Pawn(6, 1, 1);
 		Bishop cockBlocker1 = new Bishop(3, 3, 0);
 		Bishop cockBlocker2 = new Bishop(3, 3, 1);
 		this.pieces[1][1] = white1;
@@ -204,13 +209,13 @@ class PiecesTest {
 		this.pieces[2][2] = null;
 		assertFalse(white1.isValidMove(2, 0, pieces));
 		assertFalse(white1.isValidMove(2, 2, pieces));
-    
+
 		// up two when not at start
 		System.out.println("W up two when not at start");
-		Pawn white2 = new Pawn(	2, 1, 0);
+		Pawn white2 = new Pawn(2, 1, 0);
 		this.pieces[2][1] = white2;
 		assertFalse(white2.isValidMove(4, 1, pieces));
-		
+
 		// up one
 		System.out.println("BPawn up one");
 		assertTrue(black1.isValidMove(5, 1, pieces));
@@ -230,75 +235,75 @@ class PiecesTest {
 		assertFalse(black1.isValidMove(5, 2, pieces));
 		// up two when not at start
 		System.out.println("B up two when not at start");
-		Pawn black2 = new Pawn(	5, 1, 0);
+		Pawn black2 = new Pawn(5, 1, 0);
 		this.pieces[2][1] = black2;
 		assertFalse(black2.isValidMove(3, 1, pieces));
 	}
 
 	@Test
 	void kingTest() {
-	// sets it up in the middle
-	King white1 = new King(4, 4, 0);
-	Bishop cockBlocker1 = new Bishop(3, 3, 0);
-	this.pieces[4][4] = white1;
-	//up left
-	System.out.println("King up left");
-	assertTrue(white1.isValidMove(5, 3, pieces));
-	//up
-	System.out.println("King up");
-	assertTrue(white1.isValidMove(5, 4, pieces));
-	//up right
-	System.out.println("King up right");
-	assertTrue(white1.isValidMove(5, 5, pieces));
-	//left
-	System.out.println("King left");
-	assertTrue(white1.isValidMove(4, 3, pieces));
-	//right
-	System.out.println("King right");
-	assertTrue(white1.isValidMove(4, 5, pieces));
-	//down left
-	System.out.println("King down left");
-	assertTrue(white1.isValidMove(3, 3, pieces));
-	//down 
-	System.out.println("King down");
-	assertTrue(white1.isValidMove(3, 4, pieces));
-	//down right
-	System.out.println("King down right");
-	assertTrue(white1.isValidMove(3, 5, pieces));
-	
+		// sets it up in the middle
+		King white1 = new King(4, 4, 0);
+		Bishop cockBlocker1 = new Bishop(3, 3, 0);
+		this.pieces[4][4] = white1;
+		// up left
+		System.out.println("King up left");
+		assertTrue(white1.isValidMove(5, 3, pieces));
+		// up
+		System.out.println("King up");
+		assertTrue(white1.isValidMove(5, 4, pieces));
+		// up right
+		System.out.println("King up right");
+		assertTrue(white1.isValidMove(5, 5, pieces));
+		// left
+		System.out.println("King left");
+		assertTrue(white1.isValidMove(4, 3, pieces));
+		// right
+		System.out.println("King right");
+		assertTrue(white1.isValidMove(4, 5, pieces));
+		// down left
+		System.out.println("King down left");
+		assertTrue(white1.isValidMove(3, 3, pieces));
+		// down
+		System.out.println("King down");
+		assertTrue(white1.isValidMove(3, 4, pieces));
+		// down right
+		System.out.println("King down right");
+		assertTrue(white1.isValidMove(3, 5, pieces));
+
 	}
-	
+
 	@Test
 	void knightTest() {
-	this.pieces = new ChessPiece[8][8];
-	// sets it up in the middle
-	Knight white1 = new Knight(4, 4, 0);
-	Bishop cockBlocker1 = new Bishop(3, 3, 0);
-	this.pieces[4][4] = white1;
-	//up left
-	System.out.println("Knight up left");
-	assertTrue(white1.isValidMove(5, 2, pieces));
-	//up
-	System.out.println("Knight up");
-	assertTrue(white1.isValidMove(6, 3, pieces));
-	//up right
-	System.out.println("Knight up right");
-	assertTrue(white1.isValidMove(6, 5, pieces));
-	//left
-	System.out.println("Knight left");
-	assertTrue(white1.isValidMove(5, 6, pieces));
-	//right
-	System.out.println("Knight right");
-	assertTrue(white1.isValidMove(6, 3, pieces));
-	//down left
-	System.out.println("Knight down left");
-	assertTrue(white1.isValidMove(5, 2, pieces));
-	//down 
-	System.out.println("Knight down");
-	assertTrue(white1.isValidMove(3, 2, pieces));
-	//down right
-	System.out.println("Knight down right");
-	assertTrue(white1.isValidMove(2, 3, pieces));
-	
+		this.pieces = new ChessPiece[8][8];
+		// sets it up in the middle
+		Knight white1 = new Knight(4, 4, 0);
+		Bishop cockBlocker1 = new Bishop(3, 3, 0);
+		this.pieces[4][4] = white1;
+		// up left
+		System.out.println("Knight up left");
+		assertTrue(white1.isValidMove(5, 2, pieces));
+		// up
+		System.out.println("Knight up");
+		assertTrue(white1.isValidMove(6, 3, pieces));
+		// up right
+		System.out.println("Knight up right");
+		assertTrue(white1.isValidMove(6, 5, pieces));
+		// left
+		System.out.println("Knight left");
+		assertTrue(white1.isValidMove(5, 6, pieces));
+		// right
+		System.out.println("Knight right");
+		assertTrue(white1.isValidMove(6, 3, pieces));
+		// down left
+		System.out.println("Knight down left");
+		assertTrue(white1.isValidMove(5, 2, pieces));
+		// down
+		System.out.println("Knight down");
+		assertTrue(white1.isValidMove(3, 2, pieces));
+		// down right
+		System.out.println("Knight down right");
+		assertTrue(white1.isValidMove(2, 3, pieces));
+
 	}
 }

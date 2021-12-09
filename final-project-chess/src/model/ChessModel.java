@@ -2,8 +2,9 @@
 /**
  * @filename ChessModel.java
  * @author Garrison Mendlik 12/8/2021
- *         Jasnam Swani
- * TODO: Add your names
+ * @author Jasnam Swani
+ * @author Harshvardhan Bhatnagar
+ * @author Chris Brinkley
  * @purpose Models a game of chess. Can create new games, as well as saving and
  * loading games.
  */

@@ -2,8 +2,9 @@
 /**
  * @filename Rook.java
  * @author Garrison Mendlik 12/8/2021
- * 		   Jasnam Swani
- * TODO: Add your names
+ * @author Jasnam Swani
+ * @author Harshvardhan Bhatnagar
+ * @author Chris Brinkley
  * @purpose Rook chess piece implementation.
  */
 
@@ -41,15 +42,15 @@ public class Rook extends ChessPiece {
 		if (this.row != row && this.col != col) {
 			return false;
 		}
-		//left right check
-		if(this.row == row) {
-			//right check
+		// left right check
+		if (this.row == row) {
+			// right check
 			for (int i = this.col + 1; i < col; i++) {
 				if (pieces[i][row] != null) {
 					return false;
 				}
 			}
-			//left check
+			// left check
 			for (int i = this.col - 1; i > col; i--) {
 				if (pieces[i][row] != null) {
 					return false;
@@ -57,16 +58,16 @@ public class Rook extends ChessPiece {
 			}
 			return true;
 		}
-		
-		//up down check
-		if(this.col == col) {
-			//up check
+
+		// up down check
+		if (this.col == col) {
+			// up check
 			for (int i = this.row + 1; i < row; i++) {
 				if (pieces[col][i] != null) {
 					return false;
 				}
 			}
-			//down check
+			// down check
 			for (int i = this.row - 1; i > row; i--) {
 				if (pieces[col][i] != null) {
 					return false;

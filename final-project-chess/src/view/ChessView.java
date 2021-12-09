@@ -2,7 +2,9 @@
 /**
  * @filename ChessView.java
  * @author Garrison Mendlik 12/8/2021
- * TODO: Add your names
+ * @author Jasnam Swani
+ * @author Harshvardhan Bhatnagar
+ * @author Chris Brinkley
  * @purpose Initializes the application GUI.
  */
 
@@ -199,7 +201,6 @@ public class ChessView extends Application {
 				newSquare.getChildren().add(imageView);
 				control.setTurn();
 			}
-
 
 		}
 	}

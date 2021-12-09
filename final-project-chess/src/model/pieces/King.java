@@ -2,8 +2,9 @@
 /**
  * @filename King.java
  * @author Garrison Mendlik 12/8/2021
- * 		   Jasnam Swani
- * TODO: Add your names
+ * @author Jasnam Swani
+ * @author Harshvardhan Bhatnagar
+ * @author Chris Brinkley
  * @purpose King chess piece implementation.
  */
 

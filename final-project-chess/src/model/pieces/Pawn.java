@@ -2,8 +2,9 @@
 /**
  * @filename Pawn.java
  * @author Garrison Mendlik 12/8/2021
- * 		   Jasnam Swani
- * TODO: Add your names
+ * @author Jasnam Swani
+ * @author Harshvardhan Bhatnagar
+ * @author Chris Brinkley
  * @purpose Pawn chess piece implementation.
  */
 
@@ -36,7 +37,7 @@ public class Pawn extends ChessPiece {
 	 * @return Returns true if the pawn can make the move
 	 */
 	public boolean isValidMove(int row, int col, ChessPiece[][] pieces) {
-		System.out.println("pawn moving to (" + col+","+row+")");
+		System.out.println("pawn moving to (" + col + "," + row + ")");
 		if (pieces[col][row] != null
 				&& pieces[col][row].getColor() == this.color) {
 			return false;
@@ -47,15 +48,15 @@ public class Pawn extends ChessPiece {
 			offset = -1;
 		}
 		if (this.row + offset == row) {
-			//if the square is empty then we all good
-			if(pieces[col][row] == null && this.col == col) {
+			// if the square is empty then we all good
+			if (pieces[col][row] == null && this.col == col) {
+				return true;
+			} else if (pieces[col][row] != null
+					&& pieces[col][row].color != this.color) {
+				// diagonal take check
 				return true;
 			}
-			else if( pieces[col][row] != null && pieces[col][row].color != this.color) {
-				//diagonal take check
-				return true;
-			}
-			//else it has a friendly piece so false
+			// else it has a friendly piece so false
 			return false;
 		}
 
